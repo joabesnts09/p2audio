@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// NOTA: Esta rota não está implementada porque o modelo audioProject não existe no schema do Prisma
+// NOTA: Esta rota não está implementada
 // Use /api/audios/[id] para áudios e /api/youtube/[id] para vídeos do YouTube
 
 // GET - Buscar projeto por ID
