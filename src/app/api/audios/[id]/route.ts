@@ -1,120 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPrismaClient, disconnectPrisma } from '@/lib/prisma'
 
-// GET - Buscar áudio por ID
+// Dados mockados para demonstração
+const MOCK_AUDIOS = [
+  {
+    id: 'mock-1',
+    title: 'Projeto de Áudio 1',
+    description: 'Demonstração de produção de áudio profissional com qualidade superior.',
+    audioUrl: '/audio/aud1.mp3',
+    type: 'Produção de Áudio',
+    client: 'Cliente Demo',
+    duration: '02:30',
+    coverImage: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'mock-2',
+    title: 'Projeto de Áudio 2',
+    description: 'Spot publicitário com trilha sonora personalizada e narração profissional.',
+    audioUrl: '/audio/aud2.mp3',
+    type: 'Spot Publicitário',
+    client: 'Cliente Demo',
+    duration: '01:45',
+    coverImage: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'mock-3',
+    title: 'Projeto de Áudio 3',
+    description: 'E-book narrado com voz profissional e edição de alta qualidade.',
+    audioUrl: '/audio/aud3.mp3',
+    type: 'E-book Narrado',
+    client: 'Cliente Demo',
+    duration: '03:15',
+    coverImage: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+]
+
+// GET - Buscar áudio por ID (apenas dados mockados)
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const client = createPrismaClient()
+  const audio = MOCK_AUDIOS.find(a => a.id === params.id)
   
-  if (!client) {
+  if (!audio) {
     return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
+      { error: 'Áudio não encontrado' },
+      { status: 404 }
     )
   }
-  
-  const { prisma, pool } = client
-  
-  try {
-    const audio = await prisma.audio.findUnique({
-      where: { id: params.id },
-    })
 
-    if (!audio) {
-      return NextResponse.json(
-        { error: 'Áudio não encontrado' },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json(audio)
-  } catch (error) {
-    console.error('Erro ao buscar áudio:', error)
-    return NextResponse.json(
-      { error: 'Erro ao buscar áudio' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(audio)
 }
 
-// PUT - Atualizar áudio
+// PUT - Atualizar áudio (não disponível em modo demonstração)
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const client = createPrismaClient()
-  
-  if (!client) {
-    return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
-    )
-  }
-  
-  const { prisma, pool } = client
-  
-  try {
-    const body = await request.json()
-    const { title, description, audioUrl, type, client, duration, coverImage } = body
-
-    const audio = await prisma.audio.update({
-      where: { id: params.id },
-      data: {
-        title,
-        description,
-        audioUrl,
-        type: type || null,
-        client: client || null,
-        duration: duration || null,
-        coverImage: coverImage || null,
-      },
-    })
-
-    return NextResponse.json(audio)
-  } catch (error) {
-    console.error('Erro ao atualizar áudio:', error)
-    return NextResponse.json(
-      { error: 'Erro ao atualizar áudio' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(
+    { error: 'Atualização de áudios não disponível em modo demonstração' },
+    { status: 501 }
+  )
 }
 
-// DELETE - Deletar áudio
+// DELETE - Deletar áudio (não disponível em modo demonstração)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const client = createPrismaClient()
-  
-  if (!client) {
-    return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
-    )
-  }
-  
-  const { prisma, pool } = client
-  
-  try {
-    await prisma.audio.delete({
-      where: { id: params.id },
-    })
-
-    return NextResponse.json({ message: 'Áudio deletado com sucesso' })
-  } catch (error) {
-    console.error('Erro ao deletar áudio:', error)
-    return NextResponse.json(
-      { error: 'Erro ao deletar áudio' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(
+    { error: 'Exclusão de áudios não disponível em modo demonstração' },
+    { status: 501 }
+  )
 }

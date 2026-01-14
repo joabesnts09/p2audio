@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPrismaClient, disconnectPrisma } from '@/lib/prisma'
 
 // Dados mockados para demonstração
 const MOCK_AUDIOS = [
@@ -41,93 +40,16 @@ const MOCK_AUDIOS = [
   },
 ]
 
-// GET - Listar todos os áudios
+// GET - Listar todos os áudios (apenas dados mockados)
 export async function GET() {
-  // Verificar se deve usar dados mockados (modo demonstração ou sem DATABASE_URL)
-  const useMockData = process.env.USE_MOCK_DATA === 'true' || !process.env.DATABASE_URL
-  
-  if (useMockData) {
-    console.log('[API] Usando dados mockados para áudios')
-    return NextResponse.json(MOCK_AUDIOS)
-  }
-
-  try {
-    const client = createPrismaClient()
-    
-    // Se não houver cliente Prisma (modo demonstração), retornar mockados
-    if (!client) {
-      return NextResponse.json(MOCK_AUDIOS)
-    }
-    
-    const { prisma, pool } = client
-    
-    const audios = await prisma.audio.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
-    // Sempre retornar um array, mesmo que vazio
-    return NextResponse.json(Array.isArray(audios) ? audios : [])
-  } catch (error) {
-    console.error('Erro ao buscar áudios do banco, usando dados mockados:', error)
-    // Em caso de erro, retornar dados mockados para não quebrar o frontend
-    return NextResponse.json(MOCK_AUDIOS)
-  } finally {
-    try {
-      const client = createPrismaClient()
-      if (client) {
-        await disconnectPrisma(client.prisma, client.pool)
-      }
-    } catch (e) {
-      // Ignorar erro de desconexão se não houver conexão
-    }
-  }
+  console.log('[API] Usando dados mockados para áudios')
+  return NextResponse.json(MOCK_AUDIOS)
 }
 
-// POST - Criar novo áudio
+// POST - Criar novo áudio (não disponível em modo demonstração)
 export async function POST(request: NextRequest) {
-  const client = createPrismaClient()
-  
-  if (!client) {
-    return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
-    )
-  }
-  
-  const { prisma, pool } = client
-  
-  try {
-    const body = await request.json()
-    const { title, description, audioUrl, type, client, duration, coverImage } = body
-
-    if (!title || !description || !audioUrl) {
-      return NextResponse.json(
-        { error: 'Título, descrição e arquivo de áudio são obrigatórios' },
-        { status: 400 }
-      )
-    }
-
-    const audio = await prisma.audio.create({
-      data: {
-        title,
-        description,
-        audioUrl,
-        type: type || null,
-        client: client || null,
-        duration: duration || null,
-        coverImage: coverImage || null,
-      },
-    })
-
-    return NextResponse.json(audio, { status: 201 })
-  } catch (error) {
-    console.error('Erro ao criar áudio:', error)
-    return NextResponse.json(
-      { error: 'Erro ao criar áudio' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(
+    { error: 'Criação de áudios não disponível em modo demonstração' },
+    { status: 501 }
+  )
 }

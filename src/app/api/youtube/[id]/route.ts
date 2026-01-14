@@ -1,131 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPrismaClient, disconnectPrisma } from '@/lib/prisma'
 
-// GET - Buscar vídeo por ID
+// Dados mockados para demonstração
+const MOCK_VIDEOS = [
+  {
+    id: 'mock-youtube-1',
+    title: 'Vídeo Demonstrativo 1',
+    description: 'Exemplo de trabalho realizado com produção de áudio profissional.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=sR9mcz_Ujto',
+    type: 'Produção de Áudio',
+    client: null,
+    duration: null,
+    coverImage: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'mock-youtube-2',
+    title: 'Vídeo Demonstrativo 2',
+    description: 'Spot publicitário com narração profissional e edição de alta qualidade.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=w4p6ufUr7yk',
+    type: 'Spot Publicitário',
+    client: null,
+    duration: null,
+    coverImage: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'mock-youtube-3',
+    title: 'Vídeo Demonstrativo 3',
+    description: 'E-book narrado com voz profissional e trilha sonora personalizada.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=J0iQf21GBpA',
+    type: 'E-book Narrado',
+    client: null,
+    duration: null,
+    coverImage: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+]
+
+// GET - Buscar vídeo por ID (apenas dados mockados)
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const client = createPrismaClient()
+  const video = MOCK_VIDEOS.find(v => v.id === params.id)
   
-  if (!client) {
+  if (!video) {
     return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
+      { error: 'Vídeo não encontrado' },
+      { status: 404 }
     )
   }
-  
-  const { prisma, pool } = client
-  
-  try {
-    // O modelo no Prisma Client é youTubeVideo (camelCase do YouTubeVideo)
-    const video = await prisma.youTubeVideo.findUnique({
-      where: { id: params.id },
-    })
 
-    if (!video) {
-      return NextResponse.json(
-        { error: 'Vídeo não encontrado' },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json(video)
-  } catch (error) {
-    console.error('Erro ao buscar vídeo:', error)
-    return NextResponse.json(
-      { error: 'Erro ao buscar vídeo' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(video)
 }
 
-// PUT - Atualizar vídeo
+// PUT - Atualizar vídeo (não disponível em modo demonstração)
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const client = createPrismaClient()
-  
-  if (!client) {
-    return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
-    )
-  }
-  
-  const { prisma, pool } = client
-  
-  try {
-    const body = await request.json()
-    const { title, description, youtubeUrl, type } = body
-
-    // Validar URL do YouTube se fornecida
-    if (youtubeUrl) {
-      const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/
-      if (!youtubeRegex.test(youtubeUrl)) {
-        return NextResponse.json(
-          { error: 'URL do YouTube inválida' },
-          { status: 400 }
-        )
-      }
-    }
-
-    // O modelo no Prisma Client é youTubeVideo (camelCase do YouTubeVideo)
-    const video = await prisma.youTubeVideo.update({
-      where: { id: params.id },
-      data: {
-        title,
-        description,
-        youtubeUrl,
-        type: type || null,
-      },
-    })
-
-    return NextResponse.json(video)
-  } catch (error) {
-    console.error('Erro ao atualizar vídeo:', error)
-    return NextResponse.json(
-      { error: 'Erro ao atualizar vídeo' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(
+    { error: 'Atualização de vídeos não disponível em modo demonstração' },
+    { status: 501 }
+  )
 }
 
-// DELETE - Deletar vídeo
+// DELETE - Deletar vídeo (não disponível em modo demonstração)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const client = createPrismaClient()
-  
-  if (!client) {
-    return NextResponse.json(
-      { error: 'Banco de dados não configurado' },
-      { status: 503 }
-    )
-  }
-  
-  const { prisma, pool } = client
-  
-  try {
-    // O modelo no Prisma Client é youTubeVideo (camelCase do YouTubeVideo)
-    await prisma.youTubeVideo.delete({
-      where: { id: params.id },
-    })
-
-    return NextResponse.json({ message: 'Vídeo deletado com sucesso' })
-  } catch (error) {
-    console.error('Erro ao deletar vídeo:', error)
-    return NextResponse.json(
-      { error: 'Erro ao deletar vídeo' },
-      { status: 500 }
-    )
-  } finally {
-    await disconnectPrisma(prisma, pool)
-  }
+  return NextResponse.json(
+    { error: 'Exclusão de vídeos não disponível em modo demonstração' },
+    { status: 501 }
+  )
 }
