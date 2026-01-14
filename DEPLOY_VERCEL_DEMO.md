@@ -28,6 +28,14 @@ Este guia explica como fazer deploy na Vercel usando dados mockados para apresen
 
 ## 🚀 Como fazer deploy na Vercel
 
+### ⚠️ IMPORTANTE: Verificar package.json
+
+Antes de fazer deploy, certifique-se de que o `package.json` existe na raiz do projeto e contém:
+- `next` nas dependências
+- Script `postinstall` para gerar Prisma Client
+
+Se não existir, o arquivo foi criado automaticamente! ✅
+
 ### Opção 1: Sem banco de dados (Modo Demonstração)
 
 1. **Criar conta na Vercel:**
@@ -38,6 +46,7 @@ Este guia explica como fazer deploy na Vercel usando dados mockados para apresen
    - Clique em "Add New Project"
    - Conecte seu repositório Git
    - Ou faça upload manual
+   - **Verifique se o Root Directory está correto** (deve apontar para a raiz onde está o package.json)
 
 3. **Configurar variáveis de ambiente:**
    - No painel da Vercel, vá em **Settings** → **Environment Variables**
@@ -160,6 +169,13 @@ JWT_SECRET=sua_chave_secreta
 - O Prisma Client é gerado durante o build (não precisa de conexão)
 - Se houver erro, verifique os logs da Vercel
 - Certifique-se de que `USE_MOCK_DATA=true` está configurado
+
+### Erro "No Next.js version detected":
+- ✅ **Resolvido!** O `package.json` foi criado
+- Verifique se o `package.json` está na raiz do projeto
+- Verifique se o **Root Directory** na Vercel está correto
+- Se ainda der erro, verifique se o `package.json` tem `next` nas dependências
+- Faça commit do `package.json` e tente novamente
 
 ---
 
