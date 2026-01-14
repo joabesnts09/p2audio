@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Tabela de Usuários (Admin)
+model User {
+  id          String    @id @default(cuid())
+  username    String    @unique
+  email       String    @unique
+  password    String    // Hash da senha
+  role        String    @default("admin") // Por enquanto apenas admin
+  expireToken DateTime? // Data de expiração do token JWT
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("users")
+}
+
+// Tabela de Áudios (Upload direto)
+model Audio {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  audioUrl    String   // URL do arquivo de áudio após upload
+  type        String?  // Tipo de serviço (opcional)
+  client      String?  // Cliente (opcional)
+  duration    String?  // Duração MM:SS (opcional)
+  coverImage  String?  // URL da imagem de capa (opcional)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("audios")
+}
+
+// Tabela de Vídeos do YouTube
+model YouTubeVideo {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  youtubeUrl  String   // Link completo do YouTube
+  type        String?  // Tipo de serviço (opcional)
+  client      String?  // Cliente (opcional)
+  duration    String?  // Duração MM:SS (opcional)
+  coverImage  String?  // URL da imagem de capa (opcional)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("youtube_videos")
+}

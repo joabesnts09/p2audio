@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "aud1",
+    "description": "Audio de introdução",
+    "audioUrl": "/audio/aud1.mp3",
+    "type": "Locução",
+    "duration": "00:21"
+  },
+  {
+    "id": 2,
+    "title": "aud2",
+    "description": "Segundo áudio de exemplo",
+    "audioUrl": "/audio/aud2.mp3",
+    "type": "Locução",
+    "duration": "00:30"
+  },
+  {
+    "id": 3,
+    "title": "aud3",
+    "description": "Terceiro áudio de exemplo",
+    "audioUrl": "/audio/aud3.mp3",
+    "type": "Locução",
+    "duration": "00:25"
+  }
+]
