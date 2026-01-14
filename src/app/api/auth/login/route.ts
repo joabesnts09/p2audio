@@ -4,7 +4,16 @@ import { generateToken, getTokenExpirationDate } from '@/lib/jwt'
 import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
-  const { prisma, pool } = createPrismaClient()
+  const client = createPrismaClient()
+  
+  if (!client) {
+    return NextResponse.json(
+      { error: 'Banco de dados não configurado' },
+      { status: 503 }
+    )
+  }
+  
+  const { prisma, pool } = client
 
   try {
     const body = await request.json()

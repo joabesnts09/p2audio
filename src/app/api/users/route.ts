@@ -3,7 +3,16 @@ import { createPrismaClient, disconnectPrisma } from '@/lib/prisma'
 
 // GET - Listar todos os usuários (sem senha)
 export async function GET() {
-  const { prisma, pool } = createPrismaClient()
+  const client = createPrismaClient()
+  
+  if (!client) {
+    return NextResponse.json(
+      { error: 'Banco de dados não configurado' },
+      { status: 503 }
+    )
+  }
+  
+  const { prisma, pool } = client
 
   try {
     const users = await prisma.user.findMany({

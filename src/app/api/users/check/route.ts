@@ -3,7 +3,16 @@ import { createPrismaClient, disconnectPrisma } from '@/lib/prisma'
 
 // GET - Verificar se existe algum usuário no banco
 export async function GET() {
-  const { prisma, pool } = createPrismaClient()
+  const client = createPrismaClient()
+  
+  if (!client) {
+    return NextResponse.json(
+      { hasUsers: false, count: 0, error: 'Banco de dados não configurado' },
+      { status: 503 }
+    )
+  }
+  
+  const { prisma, pool } = client
   
   try {
     const userCount = await prisma.user.count()

@@ -6,7 +6,16 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { prisma, pool } = createPrismaClient()
+  const client = createPrismaClient()
+  
+  if (!client) {
+    return NextResponse.json(
+      { error: 'Banco de dados não configurado' },
+      { status: 503 }
+    )
+  }
+  
+  const { prisma, pool } = client
 
   try {
     const { id } = params

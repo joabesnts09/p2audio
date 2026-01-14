@@ -4,7 +4,16 @@ import bcrypt from 'bcryptjs'
 
 // POST - Criar o primeiro usuário admin (só funciona se não houver usuários)
 export async function POST(request: NextRequest) {
-  const { prisma, pool } = createPrismaClient()
+  const client = createPrismaClient()
+  
+  if (!client) {
+    return NextResponse.json(
+      { error: 'Banco de dados não configurado' },
+      { status: 503 }
+    )
+  }
+  
+  const { prisma, pool } = client
   
   try {
     // Verificar se já existe algum usuário
