@@ -12,7 +12,7 @@ export const Hero = () => {
             <div className="absolute inset-0 z-0">
                 <Image
                     src="/assets/produtora.jpg"
-                    alt="Produtora de Áudio"
+                    alt="Estúdio de produção de áudio profissional p2audio - Equipamentos de gravação e edição de alta qualidade"
                     fill
                     className="object-cover"
                     priority

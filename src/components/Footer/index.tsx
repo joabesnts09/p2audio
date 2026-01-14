@@ -22,15 +22,15 @@ export const Footer = () => {
             <div className="max-w-7xl mx-auto flex flex-col items-center relative z-10">
                 {/* Logo */}
                 <div className="mb-8">
-                    <Image src={logo} alt="Logo" width={80} height={80} />
+                    <Image src={logo} alt="Logo p2audio - Produtora de Áudio Profissional" width={80} height={80} />
                 </div>
 
                 {/* Phone Number */}
                 <a
-                    href="tel:+55359983397070"
+                    href="tel:+553598397070"
                     className="text-gold-yellow text-2xl md:text-3xl font-bold mb-6 hover:text-gold transition-colors"
                 >
-                    (35) 998339-7070
+                    (35) 98397-070
                 </a>
 
                 {/* Copyright */}
