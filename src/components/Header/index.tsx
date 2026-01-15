@@ -54,9 +54,9 @@ export const Header = () => {
             className="fixed top-0 left-0 w-full z-50 bg-dark-charcoal/80 backdrop-blur-md"
         >
             <div id="header" className="container mx-auto px-4 md:px-8 lg:px-16 py-6 flex items-center justify-between">
-                <a href="/" className="flex items-center gap-3" aria-label="p2audio - Página inicial">
-                    <Image src={logo} alt="Logo p2audio - Produtora de Áudio Profissional" width={50} height={50} />
-                    {/* <span className="text-white font-bold text-xl hidden sm:block">p2audio</span> */}
+                <a href="/" className="flex items-center gap-3" aria-label="P2 Áudio - Página inicial">
+                    <Image src={logo} alt="Logo P2 Áudio - Produtora de Áudio Profissional" width={50} height={50} />
+                    <span className="text-white font-bold text-xl">P2Audio</span>
                 </a>
 
                 <div className="flex items-center gap-4">

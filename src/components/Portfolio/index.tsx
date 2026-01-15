@@ -50,15 +50,15 @@ export const Portfolio = () => {
     return (
         <section id="portfolio" className="py-20 px-4 md:px-8 lg:px-16 bg-white">
             <div className="container mx-auto">
-                <motion.h2
+                <motion.h1
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
                     className="text-4xl md:text-5xl font-bold text-black mb-4 text-center"
                 >
-                    Portfólio
-                </motion.h2>
+                    Portfólio - <span className="text-gold-yellow">P2 Áudio</span>
+                </motion.h1>
 
                 {isLoading ? (
                     <motion.div

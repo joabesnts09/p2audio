@@ -47,7 +47,7 @@ export const Hero = () => {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-white text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-8 md:mb-12 leading-tight"
                     >
-                        Som profissional que transforma ideias em experiências sonoras memoráveis
+                        <span className="text-gold-yellow">P2 Produtora de Áudio</span> - Som profissional que transforma ideias em experiências sonoras memoráveis
                     </motion.h1>
 
                     {/* Subheadline */}

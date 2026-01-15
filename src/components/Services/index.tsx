@@ -170,15 +170,15 @@ export const Services = () => {
             </div>
 
             <div className="container mx-auto relative z-10">
-                <motion.h2
+                <motion.h1
                     initial={{ opacity: 0, y: -10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-50px' }}
                     transition={{ duration: 0.15 }}
                     className="text-4xl md:text-5xl font-bold text-black mb-12 text-center"
                 >
-                    Serviços
-                </motion.h2>
+                    Serviços - <span className="text-gold-yellow">P2 Áudio</span>
+                </motion.h1>
 
                 {/* Seção de Cards de Serviços */}
                 <div className="mb-16">
