@@ -19,7 +19,7 @@ Este documento descreve as otimizações de SEO implementadas no projeto.
 ### 3. Robots.txt
 - Configurado em `/robots.txt`
 - Permite indexação de páginas públicas
-- Bloqueia indexação de `/api/` e `/admin/`
+- Bloqueia indexação de `/api/`
 
 ### 4. Dados Estruturados (Schema.org)
 - **Organization Schema**: Informações da empresa

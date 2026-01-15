@@ -38,7 +38,7 @@ export const ServicesPreview = () => {
                         transition={{ duration: 0.3 }}
                         className="flex justify-center md:justify-end"
                     >
-                        <div className="text-8xl md:text-9xl opacity-20">
+                        <div className="text-8xl md:text-9xl opacity-60 text-gray-400">
                             🎙️
                         </div>
                     </motion.div>
