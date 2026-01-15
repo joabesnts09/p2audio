@@ -109,7 +109,7 @@ export const Services = () => {
         ]
         
         // Combinar tipos únicos dos dados com tipos possíveis, removendo duplicatas
-        const allTypes = [...new Set([...uniqueTypes, ...possibleTypes])]
+        const allTypes = Array.from(new Set([...uniqueTypes, ...possibleTypes]))
         return allTypes.sort()
     }
 
