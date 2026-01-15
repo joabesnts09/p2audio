@@ -3,9 +3,33 @@ import { useScroll } from '../../hooks/useScroll'
 import { motion } from 'framer-motion'
 import logo from '../../../public/assets/logoP2.png'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 export const Header = () => {
     useScroll()
+    const pathname = usePathname()
+
+    // Função para retornar o href correto para seções da home
+    const getSectionHref = (section: string) => {
+        // Se estiver na home, usa apenas a âncora
+        // Se estiver em outra página, redireciona para home com a âncora
+        return pathname === '/' ? `#${section}` : `/#${section}`
+    }
+
+    // Handler para navegar para seções quando estiver em outra página
+    const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
+        if (pathname !== '/') {
+            // Se não estiver na home, deixa o link redirecionar normalmente
+            // O Next.js vai navegar para /#section e depois podemos rolar
+            return
+        }
+        // Se estiver na home, previne o comportamento padrão e rola suavemente
+        e.preventDefault()
+        const element = document.getElementById(section)
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+    }
 
     const useMenuMobile = () => {
         const mobileMenu = document.querySelector(
@@ -44,8 +68,10 @@ export const Header = () => {
                         <li>
                             <a 
                                 id="nav-inicio"
-                                href="#inicio" 
-                                className="text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase"
+                                href="/" 
+                                className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
+                                    pathname === '/' ? 'active' : ''
+                                }`}
                             >
                                 Home
                             </a>
@@ -53,8 +79,10 @@ export const Header = () => {
                         <li>
                             <a 
                                 id="nav-servicos"
-                                href="#servicos" 
-                                className="text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase"
+                                href="/servicos" 
+                                className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
+                                    pathname === '/servicos' ? 'active' : ''
+                                }`}
                             >
                                 Serviços
                             </a>
@@ -62,8 +90,10 @@ export const Header = () => {
                         <li>
                             <a 
                                 id="nav-portfolio"
-                                href="#portfolio" 
-                                className="text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase"
+                                href="/portfolio" 
+                                className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
+                                    pathname === '/portfolio' ? 'active' : ''
+                                }`}
                             >
                                 Portfólio
                             </a>
@@ -71,7 +101,8 @@ export const Header = () => {
                         <li>
                             <a 
                                 id="nav-sobre"
-                                href="#sobre" 
+                                href={getSectionHref('sobre')} 
+                                onClick={(e) => handleSectionClick(e, 'sobre')}
                                 className="text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase"
                             >
                                 Sobre
@@ -80,7 +111,8 @@ export const Header = () => {
                         <li>
                             <a 
                                 id="nav-contato"
-                                href="#contato" 
+                                href={getSectionHref('contato')} 
+                                onClick={(e) => handleSectionClick(e, 'contato')}
                                 className="text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase"
                             >
                                 Contato
@@ -110,9 +142,11 @@ export const Header = () => {
                     <li>
                         <a 
                             id="mobile-nav-inicio"
-                            href="#inicio" 
+                            href="/" 
                             onClick={useMenuMobile} 
-                            className="text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase"
+                            className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
+                                pathname === '/' ? 'active' : ''
+                            }`}
                         >
                             Home
                         </a>
@@ -120,9 +154,11 @@ export const Header = () => {
                     <li>
                         <a 
                             id="mobile-nav-servicos"
-                            href="#servicos" 
+                            href="/servicos" 
                             onClick={useMenuMobile} 
-                            className="text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase"
+                            className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
+                                pathname === '/servicos' ? 'active' : ''
+                            }`}
                         >
                             Serviços
                         </a>
@@ -130,9 +166,11 @@ export const Header = () => {
                     <li>
                         <a 
                             id="mobile-nav-portfolio"
-                            href="#portfolio" 
+                            href="/portfolio" 
                             onClick={useMenuMobile} 
-                            className="text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase"
+                            className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
+                                pathname === '/portfolio' ? 'active' : ''
+                            }`}
                         >
                             Portfólio
                         </a>
@@ -140,8 +178,11 @@ export const Header = () => {
                     <li>
                         <a 
                             id="mobile-nav-sobre"
-                            href="#sobre" 
-                            onClick={useMenuMobile} 
+                            href={getSectionHref('sobre')} 
+                            onClick={(e) => {
+                                handleSectionClick(e, 'sobre')
+                                useMenuMobile()
+                            }}
                             className="text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase"
                         >
                             Sobre
@@ -150,8 +191,11 @@ export const Header = () => {
                     <li>
                         <a 
                             id="mobile-nav-contato"
-                            href="#contato" 
-                            onClick={useMenuMobile} 
+                            href={getSectionHref('contato')} 
+                            onClick={(e) => {
+                                handleSectionClick(e, 'contato')
+                                useMenuMobile()
+                            }}
                             className="text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase"
                         >
                             Contato

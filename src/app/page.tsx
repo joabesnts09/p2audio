@@ -1,5 +1,6 @@
 import { Main } from "@/components/Main"
 import { Header } from "@/components/Header"
+import { ScrollToSection } from "@/components/ScrollToSection"
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <ScrollToSection />
       <Main />
     </>
   )
