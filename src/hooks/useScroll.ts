@@ -14,6 +14,16 @@ export const useScroll = () => {
                 }
             }
 
+            // Verificar se está nas páginas de serviços ou portfólio
+            const pathname = window.location.pathname
+            const isServicosPage = pathname === '/servicos'
+            const isPortfolioPage = pathname === '/portfolio'
+
+            // Se estiver nas páginas de serviços ou portfólio, não manipular esses links
+            if (isServicosPage || isPortfolioPage) {
+                return
+            }
+
             const sections = ['inicio', 'servicos', 'portfolio', 'sobre', 'contato']
             const scrollPosition = window.scrollY + 150
             const scrollThreshold = 100
