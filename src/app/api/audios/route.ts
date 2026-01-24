@@ -188,16 +188,25 @@ function parseFileName(fileName: string): {
 
 /**
  * Lista arquivos de áudio da pasta local /public/Portfólio
- * IMPORTANTE: Esta função só lê os NOMES dos arquivos, não os arquivos em si
- * Os arquivos são servidos como estáticos pelo Next.js
+ * IMPORTANTE: No Vercel, esta função retorna vazio para evitar incluir arquivos no bundle
+ * Os arquivos são servidos como estáticos pelo Next.js via URLs diretas
  */
 async function getLocalAudios(): Promise<any[]> {
   try {
-    // Usar caminho relativo para evitar problemas no Vercel
+    // No Vercel, não ler arquivos locais para evitar exceder limite de 300MB
+    // Os arquivos em /public são servidos como estáticos automaticamente
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      console.log('[API] Produção: arquivos estáticos serão servidos diretamente do /public')
+      // Retornar array vazio - os arquivos serão acessados via URLs estáticas
+      // A lista de arquivos pode ser gerada manualmente ou via build-time
+      return []
+    }
+    
+    // Apenas em desenvolvimento local, ler a pasta
     const portfolioPath = join(process.cwd(), 'public', 'Portfólio')
     
-    // Verificar se a pasta existe (apenas em runtime, não durante build)
-    if (typeof window === 'undefined' && !existsSync(portfolioPath)) {
+    // Verificar se a pasta existe
+    if (!existsSync(portfolioPath)) {
       console.log('[API] Pasta Portfólio não encontrada')
       return []
     }
@@ -568,10 +577,29 @@ const MOCK_AUDIOS = [
   },
 ]
 
-// GET - Listar todos os áudios (prioridade: local > Drive > mockados)
+// GET - Listar todos os áudios (prioridade: JSON estático > local > Drive > mockados)
 export async function GET() {
   try {
-    // 1. Tentar buscar arquivos locais primeiro (mais rápido e confiável)
+    // 1. Tentar carregar do JSON estático gerado em build time (mais eficiente no Vercel)
+    try {
+      const fs = await import('fs')
+      const path = await import('path')
+      const jsonPath = path.join(process.cwd(), 'public', 'data', 'audio-projects.json')
+      
+      if (fs.existsSync(jsonPath)) {
+        const jsonData = fs.readFileSync(jsonPath, 'utf-8')
+        const staticAudios = JSON.parse(jsonData)
+        
+        if (staticAudios.length > 0) {
+          console.log(`[API] Carregados ${staticAudios.length} áudios do JSON estático`)
+          return NextResponse.json(staticAudios)
+        }
+      }
+    } catch (jsonError) {
+      console.log('[API] JSON estático não encontrado, tentando outras fontes')
+    }
+    
+    // 2. Tentar buscar arquivos locais (apenas em desenvolvimento)
     const localAudios = await getLocalAudios()
     
     if (localAudios.length > 0) {
@@ -579,7 +607,7 @@ export async function GET() {
       return NextResponse.json(localAudios)
     }
     
-    // 2. Tentar buscar do Google Drive (fallback)
+    // 3. Tentar buscar do Google Drive (fallback)
     const driveAudios = await getDriveAudios()
     
     if (driveAudios.length > 0) {
@@ -587,7 +615,7 @@ export async function GET() {
       return NextResponse.json(driveAudios)
     }
     
-    // 3. Se não conseguir de nenhum lugar, usar dados mockados
+    // 4. Se não conseguir de nenhum lugar, usar dados mockados
     console.log('[API] Usando dados mockados para áudios')
     return NextResponse.json(MOCK_AUDIOS)
   } catch (error) {
