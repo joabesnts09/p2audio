@@ -8,8 +8,8 @@
     "client": "Accenture",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.692Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.364Z",
+    "updatedAt": "2026-01-24T20:30:01.364Z"
   },
   {
     "id": "local-1-Accenture---Suzano-wav",
@@ -20,8 +20,8 @@
     "client": "Accenture",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.693Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.364Z",
+    "updatedAt": "2026-01-24T20:30:01.364Z"
   },
   {
     "id": "local-2-Ajinomoto-food-services-wav",
@@ -31,8 +31,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.693Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.364Z",
+    "updatedAt": "2026-01-24T20:30:01.364Z"
   },
   {
     "id": "local-3-Albert-Einstein---Endocrinologia-wav",
@@ -43,8 +43,8 @@
     "client": "Albert Einstein",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.693Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-4-Ambev-wav",
@@ -54,8 +54,8 @@
     "type": "Gravação de Locução",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.693Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-5-Basf-wav",
@@ -65,8 +65,8 @@
     "type": "Locução em Inglês Nativo",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.693Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-6-Britania---Ingl-s-wav",
@@ -77,8 +77,8 @@
     "client": "Britania",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.693Z",
-    "updatedAt": "2026-01-24T14:32:52.693Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-7-Casa-de-V-deo---Ingl-s-Brit-nico-wav",
@@ -89,8 +89,8 @@
     "client": "Casa de Vídeo",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-8-Colgate-Ingl-s-wav",
@@ -101,8 +101,8 @@
     "client": "Colgate",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-9-DeWalt-Ingles-wav",
@@ -113,8 +113,8 @@
     "client": "DeWalt",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-10-Duracell-wav",
@@ -124,8 +124,8 @@
     "type": "Gravação de Locução",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-11-Edelman---Visit-Dubai-Ingl-s-wav",
@@ -136,8 +136,8 @@
     "client": "Edelman",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-12-Embratur---Visit-Brasil-Espanhol-wav",
@@ -148,8 +148,8 @@
     "client": "Embratur",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-13-Eurofarma-Espanhol-wav",
@@ -160,8 +160,8 @@
     "client": "Eurofarma",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-14-Facebook---CCXP-Ingl-s-wav",
@@ -172,8 +172,8 @@
     "client": "Facebook",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-15-Gerdau-wav",
@@ -183,8 +183,8 @@
     "type": "Gravação de Locução",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-16-Google-Plex--Ingl-s-wav",
@@ -195,8 +195,8 @@
     "client": "Google Plex",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-17-Huggies-wav",
@@ -206,8 +206,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-18-Hyundai-wav",
@@ -217,8 +217,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.365Z",
+    "updatedAt": "2026-01-24T20:30:01.365Z"
   },
   {
     "id": "local-19-Ibis-wav",
@@ -228,8 +228,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-20-Johson---Johnson-wav",
@@ -239,8 +239,8 @@
     "type": "Locução em Inglês Nativo",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-21-Linkedin---Alem-o-wav",
@@ -251,8 +251,8 @@
     "client": "Linkedin",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-22-Linkedin-for-Non-Profits---Franc-s-wav",
@@ -263,8 +263,8 @@
     "client": "Linkedin for Non",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-23-Masp-wav",
@@ -274,8 +274,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-24-Molico-wav",
@@ -285,8 +285,8 @@
     "type": "Gravação de Locução",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-25-Oracle-Ingl-s-wav",
@@ -297,8 +297,8 @@
     "client": "Oracle",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.694Z",
-    "updatedAt": "2026-01-24T14:32:52.694Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-26-PFizer-wav",
@@ -308,8 +308,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-27-Pepsico-Portugu-s-de-Portugal-wav",
@@ -320,8 +320,8 @@
     "client": "Pepsico",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-28-Picadilly-wav",
@@ -331,8 +331,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-29-Sabesp-wav",
@@ -342,8 +342,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-30-Senai-Cimatec-Mar-Ingl-s-Britanico-wav",
@@ -354,8 +354,8 @@
     "client": "Senai Cimatec Mar",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-31-Sesi-Curso-de-ingl-s-wav",
@@ -366,8 +366,8 @@
     "client": "Sesi",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-32-Siemens-wav",
@@ -377,8 +377,8 @@
     "type": "Gravação de Locução",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-33-Som-Livre-Espanhol-wav",
@@ -389,8 +389,8 @@
     "client": "Som Livre",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.366Z",
+    "updatedAt": "2026-01-24T20:30:01.366Z"
   },
   {
     "id": "local-34-TNT-wav",
@@ -400,8 +400,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.367Z",
+    "updatedAt": "2026-01-24T20:30:01.367Z"
   },
   {
     "id": "local-35-Vidara-Cultural-Paulista-mp3",
@@ -411,8 +411,8 @@
     "type": "Gravação de Locução",
     "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.367Z",
+    "updatedAt": "2026-01-24T20:30:01.367Z"
   },
   {
     "id": "local-36-Volks-e--Accenture-wav",
@@ -422,8 +422,8 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.367Z",
+    "updatedAt": "2026-01-24T20:30:01.367Z"
   },
   {
     "id": "local-37-Volvo-cars-02-mp3",
@@ -433,7 +433,7 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-24T14:32:52.695Z",
-    "updatedAt": "2026-01-24T14:32:52.695Z"
+    "createdAt": "2026-01-24T20:30:01.367Z",
+    "updatedAt": "2026-01-24T20:30:01.367Z"
   }
 ]

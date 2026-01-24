@@ -553,11 +553,21 @@ export async function GET() {
     
     // Tentativa 2: Fazer fetch do arquivo estático (funciona no Vercel em runtime)
     try {
-      const baseUrl = process.env.VERCEL_URL 
-        ? `https://${process.env.VERCEL_URL}` 
-        : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      // No Vercel, usar a URL completa do site
+      let baseUrl = 'http://localhost:3000'
+      
+      if (process.env.VERCEL_URL) {
+        baseUrl = `https://${process.env.VERCEL_URL}`
+      } else if (process.env.VERCEL) {
+        // Em produção no Vercel, tentar usar a URL do deployment
+        baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${process.env.VERCEL_URL}`
+      } else if (process.env.NEXT_PUBLIC_SITE_URL) {
+        baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+      }
       
       const jsonUrl = `${baseUrl}/data/audio-projects.json`
+      console.log(`[API] Tentando buscar JSON de: ${jsonUrl}`)
+      
       const response = await fetch(jsonUrl, { 
         cache: 'no-store',
         headers: { 'Accept': 'application/json' }
@@ -570,6 +580,8 @@ export async function GET() {
           console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (fetch)`)
           return NextResponse.json(staticAudios)
         }
+      } else {
+        console.log(`[API] ⚠️ Resposta não OK ao buscar JSON: ${response.status} ${response.statusText}`)
       }
     } catch (fetchError: any) {
       console.log(`[API] ⚠️ Erro ao fazer fetch do JSON: ${fetchError?.message}`)
