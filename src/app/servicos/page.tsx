@@ -18,7 +18,7 @@ export default function ServicosPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-32">
+      <main className="min-h-screen pt-32 bg-white">
         <Services />
         <Footer />
         <BoxArrowUp />

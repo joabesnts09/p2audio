@@ -1,4 +1,301 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { readdir } from 'fs/promises'
+import { join } from 'path'
+import { existsSync } from 'fs'
+
+// ID da pasta do Google Drive
+const DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1zyPMkcTQApq3fbZ64RZCeseIPGt40w5w'
+
+/**
+ * Mapeamento explícito de arquivos para suas categorias e gêneros
+ */
+interface FileMapping {
+  type: string
+  gender: 'Homem' | 'Mulher' | null
+}
+
+const FILE_CATEGORY_MAP: Record<string, FileMapping> = {
+  // Locução em Espanhol Nativo
+  'embratur - visit brasil_espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'eurofarma_espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'som livre_espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  
+  // Locução em Inglês Nativo
+  'accenture - santander_inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'basf': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'britania - inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'casa de vídeo - inglês britânico': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'colgate_inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'dewalt_ingles': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'edelman - visit dubai_inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'facebook - ccxp_inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'google plex _inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'johson & johnson': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'oracle-inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'senai cimatec mar_inglês britanico': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'sesi_curso de inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  
+  // Gravação de Locução
+  'accenture - suzano': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'ajinomoto food services': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'albert einstein - endocrinologia': { type: 'Gravação de Locução', gender: 'Homem' },
+  'ambev': { type: 'Gravação de Locução', gender: 'Homem' },
+  'duracell': { type: 'Gravação de Locução', gender: 'Homem' },
+  'gerdau': { type: 'Gravação de Locução', gender: 'Homem' },
+  'huggies': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'hyundai': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'ibis': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'masp': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'molico': { type: 'Gravação de Locução', gender: 'Homem' },
+  'pfizer': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'picadilly': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'sabesp': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'siemens': { type: 'Gravação de Locução', gender: 'Homem' },
+  'tnt': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'vidara cultural paulista': { type: 'Gravação de Locução', gender: 'Homem' },
+  'volks e  accenture': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'volvo cars 02': { type: 'Gravação de Locução', gender: 'Mulher' },
+  
+  // Locução em Alemão
+  'linkedin - alemão': { type: 'Locução em Alemão', gender: 'Mulher' },
+  
+  // Locução em Francês
+  'linkedin for non-profits - francês': { type: 'Locução em Francês', gender: 'Mulher' },
+  
+  // Locução Português Portugal
+  'pepsico_português de portugal': { type: 'Locução Português Portugal', gender: 'Mulher' },
+  
+  // Espera Telefônica (será detectado por padrão se não estiver no mapa)
+}
+
+/**
+ * Extrai informações do nome do arquivo para determinar tipo, cliente, gênero e título
+ */
+function parseFileName(fileName: string): { 
+  type: string
+  client: string
+  title: string
+  gender: 'Homem' | 'Mulher' | null
+} {
+  const nameWithoutExt = fileName.replace(/\.(wav|mp3|aif|m4a)$/i, '')
+  const normalizedName = nameWithoutExt.toLowerCase().trim()
+  
+  let type = 'Gravação de Locução'
+  let client = ''
+  let title = nameWithoutExt
+  let gender: 'Homem' | 'Mulher' | null = null
+  
+  // Normalizar nome removendo acentos para comparação
+  const normalizeForMatch = (str: string): string => {
+    return str.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+  
+  const normalizedForMatch = normalizeForMatch(nameWithoutExt)
+  
+  // Verificar primeiro no mapeamento explícito (com normalização)
+  let foundInMap = false
+  for (const [mapKey, mapping] of Object.entries(FILE_CATEGORY_MAP)) {
+    const normalizedMapKey = normalizeForMatch(mapKey)
+    // Verificar match exato ou se todas as palavras-chave estão presentes
+    if (normalizedForMatch === normalizedMapKey || 
+        normalizedForMatch.includes(normalizedMapKey) ||
+        normalizedMapKey.includes(normalizedForMatch)) {
+      type = mapping.type
+      // Usar o gênero do mapeamento (prioridade sobre detecção por padrão)
+      if (mapping.gender) {
+        gender = mapping.gender
+      }
+      foundInMap = true
+      break
+    }
+  }
+  
+  // Se não encontrou no mapa, tentar detectar gênero por padrão
+  if (!gender) {
+    const genderPatterns = [
+      { pattern: /mulher|mulher jovem|mulher madura|woman|female|feminina/i, gender: 'Mulher' as const },
+      { pattern: /homem|man|male|masculino|masculina|locutor|narrator/i, gender: 'Homem' as const },
+      { pattern: /locutora|narradora/i, gender: 'Mulher' as const },
+    ]
+    
+    for (const { pattern, gender: detectedGender } of genderPatterns) {
+      if (pattern.test(nameWithoutExt)) {
+        gender = detectedGender
+        break
+      }
+    }
+  }
+  
+  // Se não encontrou no mapa, usar padrões
+  if (!foundInMap) {
+    // Espera Telefônica (verificar primeiro)
+    if (/espera telefônica|espera telefonica|ura/i.test(nameWithoutExt)) {
+      type = 'Espera Telefônica e URA'
+    }
+    // Locução em Espanhol Nativo - fallback por padrão
+    else if (/espanhol|_espanhol|espanhol_|_es\b|es_/i.test(nameWithoutExt)) {
+      type = 'Locução em Espanhol Nativo'
+    }
+    // Locução em Inglês Nativo - fallback por padrão
+    else if (/inglês|ingles|inglés|_inglês|_ingles|_inglés|britânico|britanico|british|_en\b|en_|inglês britanico|inglês britânico/i.test(nameWithoutExt)) {
+      type = 'Locução em Inglês Nativo'
+    }
+    // Locução em Alemão - fallback por padrão
+    else if (/alemão|alemao|alemán|_de\b|de_|german/i.test(nameWithoutExt)) {
+      type = 'Locução em Alemão'
+    }
+    // Locução em Francês - fallback por padrão
+    else if (/francês|frances|français|_fr\b|fr_|french/i.test(nameWithoutExt)) {
+      type = 'Locução em Francês'
+    }
+    // Locução Português Portugal - fallback por padrão
+    else if (/português de portugal|portugues de portugal|português portugal|pt-pt/i.test(nameWithoutExt)) {
+      type = 'Locução Português Portugal'
+    }
+    // Gravação de Locução (padrão para os demais)
+    else {
+      type = 'Gravação de Locução'
+    }
+  }
+  
+  // Extrair cliente e título
+  const parts = nameWithoutExt.split(/[-_]/).map(p => p.trim()).filter(p => p)
+  
+  if (parts.length > 1) {
+    client = parts[0]
+    // Remover palavras que são idiomas do título
+    const titleParts = parts.slice(1).filter(part => {
+      const lowerPart = part.toLowerCase()
+      const isLanguage = /português|portugues|espanhol|inglês|ingles|alemão|alemao|francês|frances|britânico|britanico|_es|_en|_de|_fr|es_|en_|de_|fr_/i.test(lowerPart)
+      return !isLanguage
+    })
+    
+    title = titleParts.join(' - ').trim() || parts.slice(1).join(' - ').trim() || nameWithoutExt
+  } else {
+    title = nameWithoutExt
+  }
+  
+  return { type, client, title, gender }
+}
+
+/**
+ * Lista arquivos de áudio da pasta local /public/Portfólio
+ */
+async function getLocalAudios(): Promise<any[]> {
+  try {
+    const portfolioPath = join(process.cwd(), 'public', 'Portfólio')
+    
+    // Verificar se a pasta existe
+    if (!existsSync(portfolioPath)) {
+      console.log('[API] Pasta Portfólio não encontrada')
+      return []
+    }
+    
+    // Ler arquivos da pasta
+    const files = await readdir(portfolioPath)
+    
+    // Filtrar apenas arquivos de áudio
+    const audioFiles = files.filter(file => 
+      /\.(wav|mp3|aif|m4a)$/i.test(file)
+    )
+    
+    // Converter para formato de áudio usando a mesma função parseFileName
+    return audioFiles.map((fileName, index) => {
+      const { type, client, title, gender } = parseFileName(fileName)
+      
+      // URL relativa para arquivo estático (Next.js serve /public como /)
+      // Encode para lidar com espaços e caracteres especiais
+      const encodedFileName = encodeURIComponent(fileName)
+      const audioUrl = `/Portfólio/${encodedFileName}`
+      
+      // Construir descrição
+      const descriptionParts = [type]
+      if (client) descriptionParts.push(`Cliente: ${client}`)
+      if (gender) descriptionParts.push(`Voz: ${gender}`)
+      
+      return {
+        id: `local-${index}-${fileName.replace(/[^a-zA-Z0-9]/g, '-')}`,
+        title: title || fileName,
+        description: descriptionParts.join(' - '),
+        audioUrl,
+        type,
+        client: client || undefined,
+        gender: gender || undefined,
+        duration: undefined,
+        coverImage: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    })
+  } catch (error) {
+    console.error('[API] Erro ao ler arquivos locais:', error)
+    return []
+  }
+}
+
+/**
+ * Busca arquivos do Google Drive usando API Key
+ */
+async function getDriveAudios(): Promise<any[]> {
+  const API_KEY = process.env.GOOGLE_DRIVE_API_KEY
+  
+  if (!API_KEY) {
+    console.log('[API] Google Drive API Key não configurada, usando dados mockados')
+    return []
+  }
+  
+  try {
+    const url = `https://www.googleapis.com/drive/v3/files?q='${DRIVE_FOLDER_ID}'+in+parents+and+(mimeType+contains+'audio' or name+contains+'.wav' or name+contains+'.mp3' or name+contains+'.aif')&key=${API_KEY}&fields=files(id,name,mimeType,size,webViewLink,webContentLink)&orderBy=name`
+    
+    const response = await fetch(url, { cache: 'no-store' })
+    
+    if (!response.ok) {
+      console.error('[API] Erro ao buscar do Drive:', response.status)
+      return []
+    }
+    
+    const data = await response.json()
+    const files = data.files || []
+    
+    return files.map((file: any, index: number) => {
+      const { type, client, title, gender } = parseFileName(file.name)
+      
+      // Usar proxy interno para streaming de áudio
+      // O proxy lida com CORS e headers corretos para reprodução
+      // Fallback: se o proxy falhar, tentar link direto do Google Drive
+      const audioUrl = `/api/drive-audio/${file.id}`
+      const fallbackUrl = file.webContentLink || 
+        `https://drive.google.com/uc?export=download&id=${file.id}`
+      
+      // Construir descrição mais informativa
+      const descriptionParts = [type]
+      if (client) descriptionParts.push(`Cliente: ${client}`)
+      if (gender) descriptionParts.push(`Voz: ${gender}`)
+      
+      return {
+        id: file.id || `drive-${index}`,
+        title: title || file.name,
+        description: descriptionParts.join(' - '),
+        audioUrl,
+        fallbackUrl, // URL alternativa caso o proxy falhe
+        type,
+        client: client || undefined,
+        gender: gender || undefined,
+        duration: undefined,
+        coverImage: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    })
+  } catch (error) {
+    console.error('[API] Erro ao buscar do Drive:', error)
+    return []
+  }
+}
 
 // Dados mockados para demonstração - 3 áudios para cada tipo
 const MOCK_AUDIOS = [
@@ -10,6 +307,7 @@ const MOCK_AUDIOS = [
     audioUrl: '/audio/aud1.mp3',
     type: 'Locução',
     client: 'Cliente Demo',
+    gender: 'Homem',
     duration: '02:30',
     coverImage: null,
     createdAt: new Date().toISOString(),
@@ -263,10 +561,33 @@ const MOCK_AUDIOS = [
   },
 ]
 
-// GET - Listar todos os áudios (apenas dados mockados)
+// GET - Listar todos os áudios (prioridade: local > Drive > mockados)
 export async function GET() {
-  console.log('[API] Usando dados mockados para áudios')
-  return NextResponse.json(MOCK_AUDIOS)
+  try {
+    // 1. Tentar buscar arquivos locais primeiro (mais rápido e confiável)
+    const localAudios = await getLocalAudios()
+    
+    if (localAudios.length > 0) {
+      console.log(`[API] Carregados ${localAudios.length} áudios da pasta local`)
+      return NextResponse.json(localAudios)
+    }
+    
+    // 2. Tentar buscar do Google Drive (fallback)
+    const driveAudios = await getDriveAudios()
+    
+    if (driveAudios.length > 0) {
+      console.log(`[API] Carregados ${driveAudios.length} áudios do Google Drive`)
+      return NextResponse.json(driveAudios)
+    }
+    
+    // 3. Se não conseguir de nenhum lugar, usar dados mockados
+    console.log('[API] Usando dados mockados para áudios')
+    return NextResponse.json(MOCK_AUDIOS)
+  } catch (error) {
+    console.error('[API] Erro ao buscar áudios:', error)
+    // Em caso de erro, retornar dados mockados
+    return NextResponse.json(MOCK_AUDIOS)
+  }
 }
 
 // POST - Criar novo áudio (não disponível em modo demonstração)

@@ -18,7 +18,19 @@ export default function Home() {
     <>
       <Header />
       <ScrollToSection />
-      <Main />
+      <div 
+        className="relative"
+        style={{
+          backgroundImage: 'url(/assets/bg-home.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="relative z-10">
+          <Main />
+        </div>
+      </div>
     </>
   )
 }

@@ -8,6 +8,8 @@ interface AudioPlayerProps {
     type: string
     title?: string
     description?: string
+    gender?: 'Homem' | 'Mulher'
+    fallbackUrl?: string
 }
 
 export const AudioPlayer = ({
@@ -16,6 +18,8 @@ export const AudioPlayer = ({
     type,
     title,
     description,
+    gender,
+    fallbackUrl,
 }: AudioPlayerProps) => {
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
@@ -25,6 +29,8 @@ export const AudioPlayer = ({
     const [previousVolume, setPreviousVolume] = useState(1)
     const [isDragging, setIsDragging] = useState(false)
     const [dragTime, setDragTime] = useState(0)
+    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
     const audioRef = useRef<HTMLAudioElement>(null)
     const progressBarRef = useRef<HTMLDivElement>(null)
 
@@ -39,13 +45,72 @@ export const AudioPlayer = ({
                 setCurrentTime(audio.currentTime)
             }
         }
-        const updateDuration = () => setAudioDuration(audio.duration)
-        const handlePlay = () => setIsPlaying(true)
+        const updateDuration = () => {
+            setAudioDuration(audio.duration)
+            setIsLoading(false)
+        }
+        const handlePlay = () => {
+            setIsPlaying(true)
+            setError(null)
+        }
         const handlePause = () => setIsPlaying(false)
         const handleEnded = () => {
             setIsPlaying(false)
             setCurrentTime(0)
             setDragTime(0)
+        }
+        const handleError = (e: Event) => {
+            const audioError = audio.error
+            setIsLoading(false)
+            setIsPlaying(false)
+            
+            let errorMessage = 'Erro ao carregar áudio'
+            
+            if (audioError) {
+                switch (audioError.code) {
+                    case MediaError.MEDIA_ERR_ABORTED:
+                        errorMessage = 'Carregamento abortado'
+                        break
+                    case MediaError.MEDIA_ERR_NETWORK:
+                        errorMessage = 'Erro de rede ao carregar áudio'
+                        // Tentar usar fallback URL se disponível
+                        if (fallbackUrl && audio.src !== fallbackUrl) {
+                            console.log(`[AudioPlayer] Tentando URL alternativa para ${id}`)
+                            audio.src = fallbackUrl
+                            setIsLoading(true)
+                            setError(null)
+                            return
+                        }
+                        break
+                    case MediaError.MEDIA_ERR_DECODE:
+                        errorMessage = 'Erro ao decodificar áudio'
+                        break
+                    case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                        errorMessage = 'Formato de áudio não suportado'
+                        break
+                    default:
+                        errorMessage = 'Erro desconhecido ao carregar áudio'
+                }
+            }
+            
+            console.error(`[AudioPlayer] Erro ao carregar áudio ${id}:`, {
+                error: audioError,
+                code: audioError?.code,
+                message: errorMessage,
+                audioUrl,
+                fallbackUrl,
+                currentSrc: audio.currentSrc
+            })
+            
+            setError(errorMessage)
+        }
+        const handleLoadStart = () => {
+            setIsLoading(true)
+            setError(null)
+        }
+        const handleCanPlay = () => {
+            setIsLoading(false)
+            setError(null)
         }
 
         audio.addEventListener('timeupdate', updateTime)
@@ -53,6 +118,9 @@ export const AudioPlayer = ({
         audio.addEventListener('play', handlePlay)
         audio.addEventListener('pause', handlePause)
         audio.addEventListener('ended', handleEnded)
+        audio.addEventListener('error', handleError)
+        audio.addEventListener('loadstart', handleLoadStart)
+        audio.addEventListener('canplay', handleCanPlay)
 
         return () => {
             audio.removeEventListener('timeupdate', updateTime)
@@ -60,15 +128,24 @@ export const AudioPlayer = ({
             audio.removeEventListener('play', handlePlay)
             audio.removeEventListener('pause', handlePause)
             audio.removeEventListener('ended', handleEnded)
+            audio.removeEventListener('error', handleError)
+            audio.removeEventListener('loadstart', handleLoadStart)
+            audio.removeEventListener('canplay', handleCanPlay)
         }
-    }, [volume, isMuted, isDragging])
+    }, [volume, isMuted, isDragging, id, audioUrl])
 
-    const togglePlay = () => {
+    const togglePlay = async () => {
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.pause()
             } else {
-                audioRef.current.play()
+                try {
+                    await audioRef.current.play()
+                } catch (playError: any) {
+                    console.error(`[AudioPlayer] Erro ao reproduzir áudio ${id}:`, playError)
+                    setError('Erro ao iniciar reprodução. Verifique se o áudio está disponível.')
+                    setIsPlaying(false)
+                }
             }
         }
     }
@@ -241,22 +318,52 @@ export const AudioPlayer = ({
                             {description}
                         </p>
                     )}
+                    {/* Mensagem de erro */}
+                    {error && (
+                        <p className="text-xs text-red-600 mt-1 line-clamp-1" title={error}>
+                            ⚠️ {error}
+                        </p>
+                    )}
+                    {/* Indicador de carregamento */}
+                    {isLoading && !error && (
+                        <p className="text-xs text-gray-500 mt-1">
+                            Carregando...
+                        </p>
+                    )}
                 </div>
             )}
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
                 {/* Tag do tipo */}
                 {type && (
                     <span className="px-3 py-1 bg-gold-yellow text-black text-xs font-semibold rounded-full whitespace-nowrap">
                         {type}
                     </span>
                 )}
+                {/* Tag do gênero */}
+                {gender && (
+                    <span className={`px-3 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${
+                        gender === 'Homem' 
+                            ? 'bg-blue-100 text-blue-800' 
+                            : 'bg-pink-100 text-pink-800'
+                    }`}>
+                        {gender}
+                    </span>
+                )}
 
                 {/* Botão Play/Pause */}
                 <button
                     onClick={togglePlay}
-                    className="flex-shrink-0 w-8 h-8 rounded-full bg-gold-yellow hover:bg-gold transition-colors flex items-center justify-center text-black cursor-default"
-                    aria-label={isPlaying ? 'Pausar' : 'Reproduzir'}
+                    disabled={!!error || isLoading}
+                    className={`flex-shrink-0 w-8 h-8 rounded-full transition-colors flex items-center justify-center text-black cursor-default ${
+                        error 
+                            ? 'bg-gray-300 cursor-not-allowed opacity-50' 
+                            : isLoading
+                            ? 'bg-gray-200 cursor-wait'
+                            : 'bg-gold-yellow hover:bg-gold'
+                    }`}
+                    aria-label={error ? 'Erro ao carregar' : isPlaying ? 'Pausar' : 'Reproduzir'}
+                    title={error || undefined}
                 >
                     {isPlaying ? (
                         <svg

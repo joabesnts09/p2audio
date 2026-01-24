@@ -18,7 +18,7 @@ export default function PortfolioPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-32">
+      <main className="min-h-screen pt-32 bg-white">
         <Portfolio />
         <Footer />
         <BoxArrowUp />

@@ -4,10 +4,36 @@ import { motion } from 'framer-motion'
 import logo from '../../../public/assets/logoP2.png'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import Link from 'next/link'
+
+const servicesDropdown = [
+    {
+        title: 'Espera Telefônica e URA',
+        href: '/servicos/espera-telefonica',
+        icon: '📞',
+    },
+    {
+        title: 'Gravação de Locução',
+        href: '/servicos/gravacao-de-locucao',
+        icon: '🎙️',
+    },
+    {
+        title: 'Locução em Inglês Nativo',
+        href: '/servicos/locucao-em-ingles-nativo',
+        icon: '🌎',
+    },
+    {
+        title: 'Locução em Espanhol Nativo',
+        href: '/servicos/locucao-em-espanhol-nativo',
+        icon: '🌎',
+    },
+]
 
 export const Header = () => {
     useScroll()
     const pathname = usePathname()
+    const [isServicesHovered, setIsServicesHovered] = useState(false)
 
     // Função para retornar o href correto para seções da home
     const getSectionHref = (section: string) => {
@@ -70,22 +96,52 @@ export const Header = () => {
                                 id="nav-inicio"
                                 href="/" 
                                 className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
-                                    pathname === '/' ? 'active' : ''
+                                    pathname === '/' && !pathname?.startsWith('/servicos') ? 'active' : ''
                                 }`}
                             >
                                 Home
                             </a>
                         </li>
-                        <li>
+                        <li 
+                            className="relative"
+                            onMouseEnter={() => setIsServicesHovered(true)}
+                            onMouseLeave={() => setIsServicesHovered(false)}
+                        >
                             <a 
                                 id="nav-servicos"
                                 href="/servicos" 
                                 className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
-                                    pathname === '/servicos' ? 'active' : ''
+                                    pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
                                 }`}
                             >
                                 Serviços
                             </a>
+                            
+                            {/* Dropdown Menu */}
+                            {isServicesHovered && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute top-full left-0 mt-2 w-64 bg-dark-charcoal rounded-lg shadow-xl border-2 border-gold-yellow/30 z-50 overflow-hidden backdrop-blur-md"
+                                >
+                                    <div className="py-2">
+                                        {servicesDropdown.map((service) => (
+                                            <Link
+                                                key={service.href}
+                                                href={service.href}
+                                                className={`flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-gold-yellow hover:text-black transition-colors ${
+                                                    pathname === service.href ? 'bg-gold-yellow/30 text-gold-yellow font-medium' : ''
+                                                }`}
+                                            >
+                                                <span className="text-xl">{service.icon}</span>
+                                                <span>{service.title}</span>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
                         </li>
                         <li>
                             <a 
@@ -145,7 +201,7 @@ export const Header = () => {
                             href="/" 
                             onClick={useMenuMobile} 
                             className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
-                                pathname === '/' ? 'active' : ''
+                                pathname === '/' && !pathname?.startsWith('/servicos') ? 'active' : ''
                             }`}
                         >
                             Home
@@ -157,7 +213,7 @@ export const Header = () => {
                             href="/servicos" 
                             onClick={useMenuMobile} 
                             className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
-                                pathname === '/servicos' ? 'active' : ''
+                                pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
                             }`}
                         >
                             Serviços
@@ -242,6 +298,10 @@ export const Header = () => {
                     height: 3px;
                     background-color: #FFD700;
                     border-radius: 2px;
+                }
+                /* Dropdown de serviços */
+                #navigation li.relative:hover > a {
+                    color: #FFD700;
                 }
                 /* Estilo para link ativo no mobile */
                 #mobileNav a.active::after {

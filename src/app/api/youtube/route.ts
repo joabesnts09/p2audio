@@ -1,49 +1,110 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Dados mockados para demonstração
-const MOCK_VIDEOS = [
+// IDs dos vídeos do YouTube
+const YOUTUBE_VIDEOS = [
   {
-    id: 'mock-youtube-1',
-    title: 'Vídeo Demonstrativo 1',
-    description: 'Exemplo de trabalho realizado com produção de áudio profissional.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=sR9mcz_Ujto',
+    id: 'sR9mcz_Ujto',
     type: 'Produção de Áudio',
-    client: null,
-    duration: null,
-    coverImage: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   },
   {
-    id: 'mock-youtube-2',
-    title: 'Vídeo Demonstrativo 2',
-    description: 'Spot publicitário com narração profissional e edição de alta qualidade.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=w4p6ufUr7yk',
+    id: 'w4p6ufUr7yk',
     type: 'Spot Publicitário',
-    client: null,
-    duration: null,
-    coverImage: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   },
   {
-    id: 'mock-youtube-3',
-    title: 'Vídeo Demonstrativo 3',
-    description: 'E-book narrado com voz profissional e trilha sonora personalizada.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=J0iQf21GBpA',
+    id: 'J0iQf21GBpA',
     type: 'E-book Narrado',
-    client: null,
-    duration: null,
-    coverImage: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'Hnj9Iku7VAk',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'IRT2eL-U9n4',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'Ylwc56kYmTU',
+    type: 'Produção de Áudio',
   },
 ]
 
-// GET - Listar todos os vídeos do YouTube (apenas dados mockados)
+/**
+ * Extrai o ID do vídeo de uma URL do YouTube
+ */
+function extractYouTubeId(url: string): string | null {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+  const match = url.match(regExp)
+  return match && match[2].length === 11 ? match[2] : null
+}
+
+/**
+ * Busca metadados de um vídeo do YouTube usando oEmbed API
+ */
+async function fetchYouTubeMetadata(videoId: string): Promise<{ title: string; description: string } | null> {
+  try {
+    const oEmbedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+    const response = await fetch(oEmbedUrl, { cache: 'no-store' })
+    
+    if (!response.ok) {
+      console.error(`[API] Erro ao buscar metadados do vídeo ${videoId}:`, response.status)
+      return null
+    }
+    
+    const data = await response.json()
+    return {
+      title: data.title || '',
+      description: data.author_name ? `Vídeo de ${data.author_name}` : 'Vídeo do YouTube',
+    }
+  } catch (error) {
+    console.error(`[API] Erro ao buscar metadados do vídeo ${videoId}:`, error)
+    return null
+  }
+}
+
+// GET - Listar todos os vídeos do YouTube com títulos reais
 export async function GET() {
-  console.log('[API] Usando dados mockados para vídeos do YouTube')
-  return NextResponse.json(MOCK_VIDEOS)
+  try {
+    const videos = await Promise.all(
+      YOUTUBE_VIDEOS.map(async (video) => {
+        const youtubeUrl = `https://www.youtube.com/watch?v=${video.id}`
+        
+        // Buscar metadados reais do YouTube
+        const metadata = await fetchYouTubeMetadata(video.id)
+        
+        return {
+          id: `youtube-${video.id}`,
+          title: metadata?.title || `Vídeo ${video.id}`,
+          description: metadata?.description || 'Projeto de produção de áudio profissional.',
+          youtubeUrl,
+          type: video.type,
+          client: null,
+          duration: null,
+          coverImage: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+      })
+    )
+    
+    console.log(`[API] Carregados ${videos.length} vídeos do YouTube com títulos reais`)
+    return NextResponse.json(videos)
+  } catch (error) {
+    console.error('[API] Erro ao buscar vídeos do YouTube:', error)
+    // Em caso de erro, retornar dados básicos
+    const fallbackVideos = YOUTUBE_VIDEOS.map((video) => ({
+      id: `youtube-${video.id}`,
+      title: `Vídeo ${video.id}`,
+      description: 'Projeto de produção de áudio profissional.',
+      youtubeUrl: `https://www.youtube.com/watch?v=${video.id}`,
+      type: video.type,
+      client: null,
+      duration: null,
+      coverImage: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }))
+    return NextResponse.json(fallbackVideos)
+  }
 }
 
 // POST - Criar novo vídeo do YouTube (não disponível em modo demonstração)

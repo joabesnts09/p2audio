@@ -84,11 +84,11 @@ export const VideoCard = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:border-gold-yellow transition-all duration-300 hover:shadow-lg hover:shadow-gold-yellow/20 group"
+            className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:border-gold-yellow transition-all duration-300 hover:shadow-lg hover:shadow-gold-yellow/20 group flex flex-col h-full"
         >
             {/* Thumbnail do YouTube ou Placeholder */}
             {videoId ? (
-                <div className="mb-4 rounded-lg overflow-hidden">
+                <div className="mb-4 rounded-lg overflow-hidden flex-shrink-0">
                     <iframe
                         width="100%"
                         height="200"
@@ -100,44 +100,46 @@ export const VideoCard = ({
                     />
                 </div>
             ) : (
-                <div className="mb-4 rounded-lg bg-gradient-to-br from-gold-yellow/20 to-gold-yellow/10 h-48 flex items-center justify-center">
+                <div className="mb-4 rounded-lg bg-gradient-to-br from-gold-yellow/20 to-gold-yellow/10 h-48 flex items-center justify-center flex-shrink-0">
                     {getTypeIcon()}
                 </div>
             )}
 
             {/* Tipo de serviço */}
             {type && (
-                <div className="mb-3">
+                <div className="mb-3 flex-shrink-0">
                     <span className="inline-block px-3 py-1 bg-gold-yellow text-black text-sm font-semibold rounded-full">
                         {type}
                     </span>
                 </div>
             )}
 
-            {/* Título */}
-            <h3 className="text-xl font-bold text-black mb-2 line-clamp-2">
+            {/* Título - altura fixa para 2 linhas */}
+            <h3 className="text-xl font-bold text-black mb-2 line-clamp-2 min-h-[3.5rem] flex-shrink-0">
                 {title}
             </h3>
 
-            {/* Descrição */}
-            <p className="text-gray-700 text-sm mb-4 leading-relaxed line-clamp-3">
+            {/* Descrição - altura fixa para 3 linhas */}
+            <p className="text-gray-700 text-sm mb-4 leading-relaxed line-clamp-3 min-h-[4.5rem] flex-shrink-0">
                 {description}
             </p>
 
-            {/* Link para assistir no YouTube */}
-            {videoId && (
-                <a
-                    href={youtubeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-medium"
-                >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                    </svg>
-                    Assistir no YouTube
-                </a>
-            )}
+            {/* Link para assistir no YouTube - sempre no final */}
+            <div className="mt-auto flex-shrink-0">
+                {videoId && (
+                    <a
+                        href={youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-medium"
+                    >
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        Assistir no YouTube
+                    </a>
+                )}
+            </div>
         </motion.div>
     )
 }
