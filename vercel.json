@@ -2,7 +2,8 @@
   "functions": {
     "src/app/api/audios/route.ts": {
       "maxDuration": 10,
-      "includeFiles": "public/data/audio-projects.json"
+      "includeFiles": "public/data/audio-projects.json",
+      "excludeFiles": "public/Portfólio/**"
     }
   },
   "buildCommand": "npm run prebuild && npm run build"

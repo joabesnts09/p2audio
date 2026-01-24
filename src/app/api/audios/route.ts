@@ -189,74 +189,17 @@ function parseFileName(fileName: string): {
 }
 
 /**
- * Lista arquivos de áudio da pasta local /public/Portfólio
- * IMPORTANTE: Esta função NUNCA é chamada em produção no Vercel
- * Em produção, sempre usar o JSON estático gerado em build time
+ * Lista arquivos de áudio da pasta local
+ * IMPORTANTE: Esta função SEMPRE retorna vazio em produção/Vercel
+ * Em produção, usar APENAS o JSON estático gerado em build time
  * 
- * Esta função está desabilitada em produção para evitar que o Vercel
- * inclua os arquivos de áudio (503MB) no bundle da função serverless
+ * O Vercel analisa o código e inclui TODOS os arquivos referenciados no bundle,
+ * mesmo que não sejam executados. Por isso, esta função não faz NADA em produção.
  */
 async function getLocalAudios(): Promise<any[]> {
-  // SEMPRE retornar vazio em produção/Vercel para evitar incluir arquivos no bundle
-  // O Vercel inclui TODOS os arquivos referenciados no código, mesmo que não sejam executados
-  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-    console.log('[API] Produção: retornando vazio - usar JSON estático')
-    return []
-  }
-  
-  // Apenas em desenvolvimento local
-  try {
-    // Import dinâmico de fs/promises apenas em desenvolvimento
-    // Isso evita que o Vercel inclua fs/promises no bundle
-    const fsPromises = await import('fs/promises')
-    const portfolioPath = join(process.cwd(), 'public', 'Portfólio')
-    
-    // Verificar se a pasta existe
-    if (!existsSync(portfolioPath)) {
-      console.log('[API] Pasta Portfólio não encontrada')
-      return []
-    }
-    
-    // Ler apenas os nomes dos arquivos (não o conteúdo)
-    const files = await fsPromises.readdir(portfolioPath)
-    
-    // Filtrar apenas arquivos de áudio
-    const audioFiles = files.filter((file: string) => 
-      /\.(wav|mp3|aif|m4a)$/i.test(file)
-    )
-    
-    // Converter para formato de áudio usando a mesma função parseFileName
-    return audioFiles.map((fileName: string, index: number) => {
-      const { type, client, title, gender } = parseFileName(fileName)
-      
-      // URL relativa para arquivo estático (Next.js serve /public como /)
-      // Encode para lidar com espaços e caracteres especiais
-      const encodedFileName = encodeURIComponent(fileName)
-      const audioUrl = `/Portfólio/${encodedFileName}`
-      
-      // Construir descrição
-      const descriptionParts = [type]
-      if (client) descriptionParts.push(`Cliente: ${client}`)
-      if (gender) descriptionParts.push(`Voz: ${gender}`)
-      
-      return {
-        id: `local-${index}-${fileName.replace(/[^a-zA-Z0-9]/g, '-')}`,
-        title: title || fileName,
-        description: descriptionParts.join(' - '),
-        audioUrl,
-        type,
-        client: client || undefined,
-        gender: gender || undefined,
-        duration: undefined,
-        coverImage: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-    })
-  } catch (error) {
-    console.error('[API] Erro ao ler arquivos locais:', error)
-    return []
-  }
+  // SEMPRE retornar vazio - nunca ler arquivos em produção
+  // A lista vem do JSON estático gerado em build time
+  return []
 }
 
 /**
@@ -583,12 +526,15 @@ const MOCK_AUDIOS = [
   },
 ]
 
-// GET - Listar todos os áudios (prioridade: JSON estático > Drive > mockados)
-// IMPORTANTE: Em produção/Vercel, NUNCA ler arquivos locais para evitar exceder limite de 300MB
+// GET - Listar todos os áudios
+// IMPORTANTE: Em produção/Vercel, usa APENAS JSON estático para evitar exceder limite de 300MB
 export async function GET() {
+  // Em produção/Vercel, usar APENAS JSON estático - nunca tentar ler arquivos locais
+  const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production'
+  
   try {
     // 1. Tentar carregar do JSON estático gerado em build time (OBRIGATÓRIO no Vercel)
-    // Tentativa 1: Ler do filesystem (funciona em desenvolvimento e build)
+    // Tentativa 1: Ler do filesystem
     try {
       const jsonPath = join(process.cwd(), 'public', 'data', 'audio-projects.json')
       
@@ -597,17 +543,16 @@ export async function GET() {
         const staticAudios = JSON.parse(jsonData)
         
         if (staticAudios && Array.isArray(staticAudios) && staticAudios.length > 0) {
-          console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (filesystem)`)
+          console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático`)
           return NextResponse.json(staticAudios)
         }
       }
     } catch (fsError: any) {
-      console.log(`[API] ⚠️ Erro ao ler JSON do filesystem: ${fsError?.message}`)
+      console.log(`[API] ⚠️ Erro ao ler JSON: ${fsError?.message}`)
     }
     
     // Tentativa 2: Fazer fetch do arquivo estático (funciona no Vercel em runtime)
     try {
-      // No Vercel, tentar buscar o arquivo estático via URL
       const baseUrl = process.env.VERCEL_URL 
         ? `https://${process.env.VERCEL_URL}` 
         : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
@@ -615,9 +560,7 @@ export async function GET() {
       const jsonUrl = `${baseUrl}/data/audio-projects.json`
       const response = await fetch(jsonUrl, { 
         cache: 'no-store',
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       })
       
       if (response.ok) {
@@ -632,14 +575,17 @@ export async function GET() {
       console.log(`[API] ⚠️ Erro ao fazer fetch do JSON: ${fetchError?.message}`)
     }
     
-    // 2. Em produção/Vercel, NÃO tentar ler arquivos locais (evita exceder limite de 300MB)
-    // Apenas em desenvolvimento local, tentar ler arquivos
-    if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
-      const localAudios = await getLocalAudios()
-      
-      if (localAudios.length > 0) {
-        console.log(`[API] Carregados ${localAudios.length} áudios da pasta local`)
-        return NextResponse.json(localAudios)
+    // 2. Apenas em desenvolvimento local (NUNCA em produção), tentar ler arquivos locais
+    if (!isProduction) {
+      try {
+        const localAudios = await getLocalAudios()
+        
+        if (localAudios.length > 0) {
+          console.log(`[API] Carregados ${localAudios.length} áudios da pasta local`)
+          return NextResponse.json(localAudios)
+        }
+      } catch (localError: any) {
+        console.log(`[API] Erro ao ler arquivos locais: ${localError?.message}`)
       }
     }
     
@@ -651,12 +597,11 @@ export async function GET() {
       return NextResponse.json(driveAudios)
     }
     
-    // 4. Se não conseguir de nenhum lugar, usar dados mockados
-    console.log('[API] ⚠️ Usando dados mockados para áudios (nenhuma fonte disponível)')
+    // 4. Fallback: dados mockados
+    console.log('[API] ⚠️ Usando dados mockados (nenhuma fonte disponível)')
     return NextResponse.json(MOCK_AUDIOS)
   } catch (error: any) {
-    console.error('[API] ❌ Erro ao buscar áudios:', error?.message || error)
-    // Em caso de erro, retornar dados mockados
+    console.error('[API] ❌ Erro:', error?.message || error)
     return NextResponse.json(MOCK_AUDIOS)
   }
 }

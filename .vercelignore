@@ -1,0 +1,9 @@
+# Ignorar apenas arquivos de áudio grandes do bundle das funções serverless
+# O JSON será gerado em build time e incluído
+public/Portfólio/**/*.wav
+public/Portfólio/**/*.mp3
+public/Portfólio/**/*.aif
+public/Portfólio/**/*.m4a
+
+# Manter o JSON gerado
+!public/data/audio-projects.json
