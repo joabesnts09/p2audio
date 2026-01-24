@@ -188,19 +188,8 @@ function parseFileName(fileName: string): {
   return { type, client, title, gender }
 }
 
-/**
- * Lista arquivos de áudio da pasta local
- * IMPORTANTE: Esta função SEMPRE retorna vazio em produção/Vercel
- * Em produção, usar APENAS o JSON estático gerado em build time
- * 
- * O Vercel analisa o código e inclui TODOS os arquivos referenciados no bundle,
- * mesmo que não sejam executados. Por isso, esta função não faz NADA em produção.
- */
-async function getLocalAudios(): Promise<any[]> {
-  // SEMPRE retornar vazio - nunca ler arquivos em produção
-  // A lista vem do JSON estático gerado em build time
-  return []
-}
+// Função removida - não é mais usada
+// Os componentes agora carregam diretamente o JSON estático
 
 /**
  * Busca arquivos do Google Drive usando API Key
@@ -527,14 +516,12 @@ const MOCK_AUDIOS = [
 ]
 
 // GET - Listar todos os áudios
-// IMPORTANTE: Em produção/Vercel, usa APENAS JSON estático para evitar exceder limite de 300MB
+// IMPORTANTE: Esta rota agora apenas redireciona para o JSON estático
+// Os componentes devem carregar diretamente /data/audio-projects.json
+// Isso evita que o Vercel inclua arquivos grandes no bundle da função serverless
 export async function GET() {
-  // Em produção/Vercel, usar APENAS JSON estático - nunca tentar ler arquivos locais
-  const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production'
-  
   try {
-    // 1. Tentar carregar do JSON estático gerado em build time (OBRIGATÓRIO no Vercel)
-    // Tentativa 1: Ler do filesystem
+    // Tentar ler o JSON estático do filesystem (build time)
     try {
       const jsonPath = join(process.cwd(), 'public', 'data', 'audio-projects.json')
       
@@ -551,66 +538,9 @@ export async function GET() {
       console.log(`[API] ⚠️ Erro ao ler JSON: ${fsError?.message}`)
     }
     
-    // Tentativa 2: Fazer fetch do arquivo estático (funciona no Vercel em runtime)
-    try {
-      // No Vercel, usar a URL completa do site
-      let baseUrl = 'http://localhost:3000'
-      
-      if (process.env.VERCEL_URL) {
-        baseUrl = `https://${process.env.VERCEL_URL}`
-      } else if (process.env.VERCEL) {
-        // Em produção no Vercel, tentar usar a URL do deployment
-        baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${process.env.VERCEL_URL}`
-      } else if (process.env.NEXT_PUBLIC_SITE_URL) {
-        baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-      }
-      
-      const jsonUrl = `${baseUrl}/data/audio-projects.json`
-      console.log(`[API] Tentando buscar JSON de: ${jsonUrl}`)
-      
-      const response = await fetch(jsonUrl, { 
-        cache: 'no-store',
-        headers: { 'Accept': 'application/json' }
-      })
-      
-      if (response.ok) {
-        const staticAudios = await response.json()
-        
-        if (staticAudios && Array.isArray(staticAudios) && staticAudios.length > 0) {
-          console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (fetch)`)
-          return NextResponse.json(staticAudios)
-        }
-      } else {
-        console.log(`[API] ⚠️ Resposta não OK ao buscar JSON: ${response.status} ${response.statusText}`)
-      }
-    } catch (fetchError: any) {
-      console.log(`[API] ⚠️ Erro ao fazer fetch do JSON: ${fetchError?.message}`)
-    }
-    
-    // 2. Apenas em desenvolvimento local (NUNCA em produção), tentar ler arquivos locais
-    if (!isProduction) {
-      try {
-        const localAudios = await getLocalAudios()
-        
-        if (localAudios.length > 0) {
-          console.log(`[API] Carregados ${localAudios.length} áudios da pasta local`)
-          return NextResponse.json(localAudios)
-        }
-      } catch (localError: any) {
-        console.log(`[API] Erro ao ler arquivos locais: ${localError?.message}`)
-      }
-    }
-    
-    // 3. Tentar buscar do Google Drive (fallback)
-    const driveAudios = await getDriveAudios()
-    
-    if (driveAudios.length > 0) {
-      console.log(`[API] Carregados ${driveAudios.length} áudios do Google Drive`)
-      return NextResponse.json(driveAudios)
-    }
-    
-    // 4. Fallback: dados mockados
-    console.log('[API] ⚠️ Usando dados mockados (nenhuma fonte disponível)')
+    // Se não conseguir ler do filesystem, retornar dados mockados
+    // (Em produção, os componentes devem carregar diretamente o JSON estático)
+    console.log('[API] ⚠️ Retornando dados mockados (use /data/audio-projects.json diretamente)')
     return NextResponse.json(MOCK_AUDIOS)
   } catch (error: any) {
     console.error('[API] ❌ Erro:', error?.message || error)

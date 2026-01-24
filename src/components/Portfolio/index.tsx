@@ -66,9 +66,16 @@ export const Portfolio = () => {
 
                 setVideos(formattedVideos)
 
-                // Buscar áudios
-                const audiosResponse = await fetch('/api/audios', { cache: 'no-store' })
-                const audiosData = audiosResponse.ok ? await audiosResponse.json() : []
+                // Buscar áudios diretamente do JSON estático (evita usar API route que inclui arquivos grandes)
+                let audiosData = []
+                try {
+                    const audiosResponse = await fetch('/data/audio-projects.json', { cache: 'no-store' })
+                    if (audiosResponse.ok) {
+                        audiosData = await audiosResponse.json()
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar áudios do JSON estático:', error)
+                }
 
                 // Formatar áudios
                 const formattedAudios = audiosData.map((audio: any) => ({
