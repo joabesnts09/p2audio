@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { readdir } from 'fs/promises'
 import { join } from 'path'
-import { existsSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 
 // Forçar função dinâmica para evitar bundling de arquivos estáticos
 export const dynamic = 'force-dynamic'
@@ -195,10 +195,9 @@ async function getLocalAudios(): Promise<any[]> {
   try {
     // No Vercel, não ler arquivos locais para evitar exceder limite de 300MB
     // Os arquivos em /public são servidos como estáticos automaticamente
-    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-      console.log('[API] Produção: arquivos estáticos serão servidos diretamente do /public')
-      // Retornar array vazio - os arquivos serão acessados via URLs estáticas
-      // A lista de arquivos pode ser gerada manualmente ou via build-time
+    // A lista deve vir do JSON estático gerado em build time
+    if (process.env.VERCEL) {
+      console.log('[API] Vercel: usando JSON estático ao invés de ler arquivos locais')
       return []
     }
     
@@ -581,22 +580,51 @@ const MOCK_AUDIOS = [
 export async function GET() {
   try {
     // 1. Tentar carregar do JSON estático gerado em build time (mais eficiente no Vercel)
+    // Primeiro tenta ler do filesystem, depois tenta fazer fetch do arquivo estático
+    let staticAudios: any[] = []
+    
+    // Tentativa 1: Ler do filesystem (funciona em desenvolvimento e build)
     try {
-      const fs = await import('fs')
-      const path = await import('path')
-      const jsonPath = path.join(process.cwd(), 'public', 'data', 'audio-projects.json')
+      const jsonPath = join(process.cwd(), 'public', 'data', 'audio-projects.json')
       
-      if (fs.existsSync(jsonPath)) {
-        const jsonData = fs.readFileSync(jsonPath, 'utf-8')
-        const staticAudios = JSON.parse(jsonData)
+      if (existsSync(jsonPath)) {
+        const jsonData = readFileSync(jsonPath, 'utf-8')
+        staticAudios = JSON.parse(jsonData)
         
-        if (staticAudios.length > 0) {
-          console.log(`[API] Carregados ${staticAudios.length} áudios do JSON estático`)
+        if (staticAudios && Array.isArray(staticAudios) && staticAudios.length > 0) {
+          console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (filesystem)`)
           return NextResponse.json(staticAudios)
         }
       }
-    } catch (jsonError) {
-      console.log('[API] JSON estático não encontrado, tentando outras fontes')
+    } catch (fsError: any) {
+      console.log(`[API] ⚠️ Erro ao ler JSON do filesystem: ${fsError?.message}`)
+    }
+    
+    // Tentativa 2: Fazer fetch do arquivo estático (funciona no Vercel em runtime)
+    try {
+      // No Vercel, tentar buscar o arquivo estático via URL
+      const baseUrl = process.env.VERCEL_URL 
+        ? `https://${process.env.VERCEL_URL}` 
+        : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      
+      const jsonUrl = `${baseUrl}/data/audio-projects.json`
+      const response = await fetch(jsonUrl, { 
+        cache: 'no-store',
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      
+      if (response.ok) {
+        staticAudios = await response.json()
+        
+        if (staticAudios && Array.isArray(staticAudios) && staticAudios.length > 0) {
+          console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (fetch)`)
+          return NextResponse.json(staticAudios)
+        }
+      }
+    } catch (fetchError: any) {
+      console.log(`[API] ⚠️ Erro ao fazer fetch do JSON: ${fetchError?.message}`)
     }
     
     // 2. Tentar buscar arquivos locais (apenas em desenvolvimento)
@@ -616,10 +644,10 @@ export async function GET() {
     }
     
     // 4. Se não conseguir de nenhum lugar, usar dados mockados
-    console.log('[API] Usando dados mockados para áudios')
+    console.log('[API] ⚠️ Usando dados mockados para áudios (nenhuma fonte disponível)')
     return NextResponse.json(MOCK_AUDIOS)
-  } catch (error) {
-    console.error('[API] Erro ao buscar áudios:', error)
+  } catch (error: any) {
+    console.error('[API] ❌ Erro ao buscar áudios:', error?.message || error)
     // Em caso de erro, retornar dados mockados
     return NextResponse.json(MOCK_AUDIOS)
   }
