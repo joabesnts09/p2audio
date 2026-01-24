@@ -3,6 +3,10 @@ import { readdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
 
+// Forçar função dinâmica para evitar bundling de arquivos estáticos
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 // ID da pasta do Google Drive
 const DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1zyPMkcTQApq3fbZ64RZCeseIPGt40w5w'
 
@@ -184,18 +188,21 @@ function parseFileName(fileName: string): {
 
 /**
  * Lista arquivos de áudio da pasta local /public/Portfólio
+ * IMPORTANTE: Esta função só lê os NOMES dos arquivos, não os arquivos em si
+ * Os arquivos são servidos como estáticos pelo Next.js
  */
 async function getLocalAudios(): Promise<any[]> {
   try {
+    // Usar caminho relativo para evitar problemas no Vercel
     const portfolioPath = join(process.cwd(), 'public', 'Portfólio')
     
-    // Verificar se a pasta existe
-    if (!existsSync(portfolioPath)) {
+    // Verificar se a pasta existe (apenas em runtime, não durante build)
+    if (typeof window === 'undefined' && !existsSync(portfolioPath)) {
       console.log('[API] Pasta Portfólio não encontrada')
       return []
     }
     
-    // Ler arquivos da pasta
+    // Ler apenas os nomes dos arquivos (não o conteúdo)
     const files = await readdir(portfolioPath)
     
     // Filtrar apenas arquivos de áudio

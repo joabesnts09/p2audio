@@ -1,0 +1,5 @@
+# Ignorar arquivos de áudio do bundle das funções serverless
+public/Portfólio/**/*.mp3
+public/Portfólio/**/*.wav
+public/Portfólio/**/*.aif
+public/Portfólio/**/*.m4a
