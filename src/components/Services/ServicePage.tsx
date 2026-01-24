@@ -58,11 +58,6 @@ export const ServicePage = ({
                         const serviceTypeNormalized = normalizeString(serviceType)
                         const matches = audioTypeNormalized === serviceTypeNormalized
                         
-                        // Debug: log para verificar matching
-                        if (process.env.NODE_ENV === 'development') {
-                            console.log(`[ServicePage] Audio: "${audio.type}" (normalized: "${audioTypeNormalized}") vs ServiceType: "${serviceType}" (normalized: "${serviceTypeNormalized}") -> ${matches ? 'MATCH' : 'NO MATCH'}`)
-                        }
-                        
                         return matches
                     })
                     .map((audio: any, index: number) => ({
