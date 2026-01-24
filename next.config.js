@@ -1,20 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Excluir arquivos de áudio do bundle das funções serverless
-  experimental: {
-    serverComponentsExternalPackages: [],
-  },
-  // Garantir que arquivos estáticos não sejam incluídos no bundle
-  webpack: (config, { isServer }) => {
+  // Garantir que arquivos estáticos não sejam incluídos no bundle das funções serverless
+  webpack: (config, { isServer, webpack }) => {
     if (isServer) {
-      // Excluir arquivos de áudio do bundle do servidor
+      // Excluir arquivos de áudio da pasta Portfólio do bundle
+      config.plugins.push(
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^\.\/Portfólio\/.*\.(wav|mp3|aif|m4a)$/i,
+        })
+      )
+      
+      // Excluir módulos do Node.js que podem causar problemas no bundle
       config.externals = config.externals || []
-      config.externals.push({
-        'fs/promises': 'commonjs fs/promises',
-        'path': 'commonjs path',
-        'fs': 'commonjs fs',
-      })
+      if (Array.isArray(config.externals)) {
+        config.externals.push({
+          'fs/promises': 'commonjs fs/promises',
+        })
+      }
     }
     return config
   },

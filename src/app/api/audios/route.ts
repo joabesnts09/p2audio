@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync, readFileSync } from 'fs'
 
 // Forçar função dinâmica para evitar bundling de arquivos estáticos
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+// NÃO importar readdir aqui - será importado dinamicamente apenas em desenvolvimento
+// Isso evita que o Vercel inclua os arquivos de áudio no bundle
 
 // ID da pasta do Google Drive
 const DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1zyPMkcTQApq3fbZ64RZCeseIPGt40w5w'
@@ -188,20 +190,25 @@ function parseFileName(fileName: string): {
 
 /**
  * Lista arquivos de áudio da pasta local /public/Portfólio
- * IMPORTANTE: No Vercel, esta função retorna vazio para evitar incluir arquivos no bundle
- * Os arquivos são servidos como estáticos pelo Next.js via URLs diretas
+ * IMPORTANTE: Esta função NUNCA é chamada em produção no Vercel
+ * Em produção, sempre usar o JSON estático gerado em build time
+ * 
+ * Esta função está desabilitada em produção para evitar que o Vercel
+ * inclua os arquivos de áudio (503MB) no bundle da função serverless
  */
 async function getLocalAudios(): Promise<any[]> {
+  // SEMPRE retornar vazio em produção/Vercel para evitar incluir arquivos no bundle
+  // O Vercel inclui TODOS os arquivos referenciados no código, mesmo que não sejam executados
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    console.log('[API] Produção: retornando vazio - usar JSON estático')
+    return []
+  }
+  
+  // Apenas em desenvolvimento local
   try {
-    // No Vercel, não ler arquivos locais para evitar exceder limite de 300MB
-    // Os arquivos em /public são servidos como estáticos automaticamente
-    // A lista deve vir do JSON estático gerado em build time
-    if (process.env.VERCEL) {
-      console.log('[API] Vercel: usando JSON estático ao invés de ler arquivos locais')
-      return []
-    }
-    
-    // Apenas em desenvolvimento local, ler a pasta
+    // Import dinâmico de fs/promises apenas em desenvolvimento
+    // Isso evita que o Vercel inclua fs/promises no bundle
+    const fsPromises = await import('fs/promises')
     const portfolioPath = join(process.cwd(), 'public', 'Portfólio')
     
     // Verificar se a pasta existe
@@ -211,15 +218,15 @@ async function getLocalAudios(): Promise<any[]> {
     }
     
     // Ler apenas os nomes dos arquivos (não o conteúdo)
-    const files = await readdir(portfolioPath)
+    const files = await fsPromises.readdir(portfolioPath)
     
     // Filtrar apenas arquivos de áudio
-    const audioFiles = files.filter(file => 
+    const audioFiles = files.filter((file: string) => 
       /\.(wav|mp3|aif|m4a)$/i.test(file)
     )
     
     // Converter para formato de áudio usando a mesma função parseFileName
-    return audioFiles.map((fileName, index) => {
+    return audioFiles.map((fileName: string, index: number) => {
       const { type, client, title, gender } = parseFileName(fileName)
       
       // URL relativa para arquivo estático (Next.js serve /public como /)
@@ -576,20 +583,18 @@ const MOCK_AUDIOS = [
   },
 ]
 
-// GET - Listar todos os áudios (prioridade: JSON estático > local > Drive > mockados)
+// GET - Listar todos os áudios (prioridade: JSON estático > Drive > mockados)
+// IMPORTANTE: Em produção/Vercel, NUNCA ler arquivos locais para evitar exceder limite de 300MB
 export async function GET() {
   try {
-    // 1. Tentar carregar do JSON estático gerado em build time (mais eficiente no Vercel)
-    // Primeiro tenta ler do filesystem, depois tenta fazer fetch do arquivo estático
-    let staticAudios: any[] = []
-    
+    // 1. Tentar carregar do JSON estático gerado em build time (OBRIGATÓRIO no Vercel)
     // Tentativa 1: Ler do filesystem (funciona em desenvolvimento e build)
     try {
       const jsonPath = join(process.cwd(), 'public', 'data', 'audio-projects.json')
       
       if (existsSync(jsonPath)) {
         const jsonData = readFileSync(jsonPath, 'utf-8')
-        staticAudios = JSON.parse(jsonData)
+        const staticAudios = JSON.parse(jsonData)
         
         if (staticAudios && Array.isArray(staticAudios) && staticAudios.length > 0) {
           console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (filesystem)`)
@@ -616,7 +621,7 @@ export async function GET() {
       })
       
       if (response.ok) {
-        staticAudios = await response.json()
+        const staticAudios = await response.json()
         
         if (staticAudios && Array.isArray(staticAudios) && staticAudios.length > 0) {
           console.log(`[API] ✅ Carregados ${staticAudios.length} áudios do JSON estático (fetch)`)
@@ -627,12 +632,15 @@ export async function GET() {
       console.log(`[API] ⚠️ Erro ao fazer fetch do JSON: ${fetchError?.message}`)
     }
     
-    // 2. Tentar buscar arquivos locais (apenas em desenvolvimento)
-    const localAudios = await getLocalAudios()
-    
-    if (localAudios.length > 0) {
-      console.log(`[API] Carregados ${localAudios.length} áudios da pasta local`)
-      return NextResponse.json(localAudios)
+    // 2. Em produção/Vercel, NÃO tentar ler arquivos locais (evita exceder limite de 300MB)
+    // Apenas em desenvolvimento local, tentar ler arquivos
+    if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
+      const localAudios = await getLocalAudios()
+      
+      if (localAudios.length > 0) {
+        console.log(`[API] Carregados ${localAudios.length} áudios da pasta local`)
+        return NextResponse.json(localAudios)
+      }
     }
     
     // 3. Tentar buscar do Google Drive (fallback)
