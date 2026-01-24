@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Forçar função dinâmica para evitar pré-renderização estática
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 // IDs dos vídeos do YouTube
 const YOUTUBE_VIDEOS = [
   {

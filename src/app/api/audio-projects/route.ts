@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server'
 
+// Forçar função dinâmica para evitar pré-renderização estática
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 interface AudioProject {
   id: number
   title: string
