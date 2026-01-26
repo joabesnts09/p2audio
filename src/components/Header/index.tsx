@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import logo from '../../../public/assets/logoP2.png'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const servicesDropdown = [
@@ -34,6 +34,7 @@ export const Header = () => {
     useScroll()
     const pathname = usePathname()
     const [isServicesHovered, setIsServicesHovered] = useState(false)
+    const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false)
 
     // Função para retornar o href correto para seções da home
     const getSectionHref = (section: string) => {
@@ -66,9 +67,21 @@ export const Header = () => {
             '#mobileNav'
         ) as HTMLElement
 
+        const isActive = mobileMenu?.classList.contains('active')
+        
         mobileMenu?.classList.toggle('active')
         navList?.classList.toggle('active')
+        
+        // Se o menu está fechando, também fecha o dropdown de serviços
+        if (isActive) {
+            setIsMobileServicesOpen(false)
+        }
     }
+    
+    // Fechar dropdown quando o pathname mudar (navegação)
+    useEffect(() => {
+        setIsMobileServicesOpen(false)
+    }, [pathname])
 
     return (
         <motion.header
@@ -207,17 +220,57 @@ export const Header = () => {
                             Home
                         </a>
                     </li>
-                    <li>
-                        <a 
-                            id="mobile-nav-servicos"
-                            href="/servicos" 
-                            onClick={useMenuMobile} 
-                            className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
-                                pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
-                            }`}
-                        >
-                            Serviços
-                        </a>
+                    <li className="w-full">
+                        <div className="flex flex-col items-center w-full">
+                            <button
+                                onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                                className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase flex items-center gap-2 ${
+                                    pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
+                                }`}
+                            >
+                                <span>Serviços</span>
+                                <motion.svg
+                                    animate={{ rotate: isMobileServicesOpen ? 180 : 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </motion.svg>
+                            </button>
+                            
+                            {/* Dropdown de Serviços Mobile */}
+                            <motion.div
+                                initial={false}
+                                animate={{
+                                    height: isMobileServicesOpen ? 'auto' : 0,
+                                    opacity: isMobileServicesOpen ? 1 : 0,
+                                }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                className="overflow-hidden w-full max-w-xs"
+                            >
+                                <div className="pt-4 pb-2 space-y-2">
+                                    {servicesDropdown.map((service) => (
+                                        <Link
+                                            key={service.href}
+                                            href={service.href}
+                                            onClick={() => {
+                                                setIsMobileServicesOpen(false)
+                                                useMenuMobile()
+                                            }}
+                                            className={`flex items-center gap-3 px-4 py-3 text-lg text-white hover:bg-gold-yellow hover:text-black transition-colors rounded-lg ${
+                                                pathname === service.href ? 'bg-gold-yellow/30 text-gold-yellow font-medium' : ''
+                                            }`}
+                                        >
+                                            <span className="text-2xl">{service.icon}</span>
+                                            <span>{service.title}</span>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </div>
                     </li>
                     <li>
                         <a 
