@@ -21,19 +21,24 @@ const servicesDropdown = [
     {
         title: 'Locução em Inglês Nativo',
         href: '/servicos/locucao-em-ingles-nativo',
-        icon: '🌎',
+        icon: 'EN',
     },
     {
         title: 'Locução em Espanhol Nativo',
         href: '/servicos/locucao-em-espanhol-nativo',
-        icon: '🌎',
+        icon: 'ES',
+    },
+    {
+        title: 'Locução em Outros Idiomas',
+        href: '/servicos/locucao-em-outros-idiomas',
+        icon: '🌍',
     },
 ]
 
 export const Header = () => {
     useScroll()
     const pathname = usePathname()
-    const [isServicesHovered, setIsServicesHovered] = useState(false)
+    const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false)
     const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false)
 
     // Função para retornar o href correto para seções da home
@@ -81,7 +86,26 @@ export const Header = () => {
     // Fechar dropdown quando o pathname mudar (navegação)
     useEffect(() => {
         setIsMobileServicesOpen(false)
+        setIsServicesDropdownOpen(false)
     }, [pathname])
+    
+    // Fechar dropdown ao clicar fora (desktop)
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement
+            if (isServicesDropdownOpen && !target.closest('li.relative')) {
+                setIsServicesDropdownOpen(false)
+            }
+        }
+        
+        if (isServicesDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isServicesDropdownOpen])
 
     return (
         <motion.header
@@ -95,7 +119,7 @@ export const Header = () => {
             <div id="header" className="container mx-auto px-4 md:px-8 lg:px-16 py-6 flex items-center justify-between">
                 <a href="/" className="flex items-center gap-3" aria-label="P2 Áudio - Página inicial">
                     <Image src={logo} alt="Logo P2 Áudio - Produtora de Áudio Profissional" width={50} height={50} />
-                    <span className="text-white font-bold text-xl">P2Audio</span>
+
                 </a>
 
                 <div className="flex items-center gap-4">
@@ -115,23 +139,44 @@ export const Header = () => {
                                 Home
                             </a>
                         </li>
-                        <li 
-                            className="relative"
-                            onMouseEnter={() => setIsServicesHovered(true)}
-                            onMouseLeave={() => setIsServicesHovered(false)}
-                        >
-                            <a 
-                                id="nav-servicos"
-                                href="/servicos" 
-                                className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
-                                    pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
-                                }`}
-                            >
-                                Serviços
-                            </a>
+                        <li className="relative group">
+                            <div className="flex items-center gap-0">
+                                <Link
+                                    href="/servicos"
+                                    className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
+                                        pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
+                                    }`}
+                                >
+                                    Serviços
+                                </Link>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        setIsServicesDropdownOpen(!isServicesDropdownOpen)
+                                    }}
+                                    className={`transition-colors p-2 flex items-center touch-manipulation group-hover:text-gold-yellow ${
+                                        pathname === '/servicos' || pathname?.startsWith('/servicos/') 
+                                            ? 'text-gold-yellow hover:text-gold-yellow' 
+                                            : 'text-white hover:text-gold-yellow'
+                                    }`}
+                                    aria-label="Abrir menu de serviços"
+                                >
+                                    <motion.svg
+                                        animate={{ rotate: isServicesDropdownOpen ? 180 : 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </motion.svg>
+                                </button>
+                            </div>
                             
                             {/* Dropdown Menu */}
-                            {isServicesHovered && (
+                            {isServicesDropdownOpen && (
                                 <motion.div
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -144,11 +189,20 @@ export const Header = () => {
                                             <Link
                                                 key={service.href}
                                                 href={service.href}
-                                                className={`flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-gold-yellow hover:text-black transition-colors ${
+                                                onClick={() => setIsServicesDropdownOpen(false)}
+                                                className={`flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-gold-yellow/20 hover:text-gold-yellow transition-colors ${
                                                     pathname === service.href ? 'bg-gold-yellow/30 text-gold-yellow font-medium' : ''
                                                 }`}
                                             >
-                                                <span className="text-xl">{service.icon}</span>
+                                                {service.icon === 'EN' || service.icon === 'ES' ? (
+                                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                                                        pathname === service.href 
+                                                            ? 'bg-gold-yellow/60 text-white' 
+                                                            : 'bg-gold-yellow/40 text-white'
+                                                    }`}>{service.icon}</span>
+                                                ) : (
+                                                    <span className="text-xl">{service.icon}</span>
+                                                )}
                                                 <span>{service.title}</span>
                                             </Link>
                                         ))}
@@ -220,26 +274,43 @@ export const Header = () => {
                             Home
                         </a>
                     </li>
-                    <li className="w-full">
+                    <li className="w-full group">
                         <div className="flex flex-col items-center w-full">
-                            <button
-                                onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                                className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase flex items-center gap-2 ${
-                                    pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
-                                }`}
-                            >
-                                <span>Serviços</span>
-                                <motion.svg
-                                    animate={{ rotate: isMobileServicesOpen ? 180 : 0 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                            <div className="flex items-center gap-0">
+                                <Link
+                                    href="/servicos"
+                                    onClick={useMenuMobile}
+                                    className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
+                                        pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
+                                    }`}
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </motion.svg>
-                            </button>
+                                    Serviços
+                                </Link>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        setIsMobileServicesOpen(!isMobileServicesOpen)
+                                    }}
+                                    className={`transition-colors p-2 flex items-center touch-manipulation group-hover:text-gold-yellow ${
+                                        pathname === '/servicos' || pathname?.startsWith('/servicos/') 
+                                            ? 'text-gold-yellow hover:text-gold-yellow' 
+                                            : 'text-white hover:text-gold-yellow'
+                                    }`}
+                                    aria-label="Abrir menu de serviços"
+                                >
+                                    <motion.svg
+                                        animate={{ rotate: isMobileServicesOpen ? 180 : 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="w-6 h-6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </motion.svg>
+                                </button>
+                            </div>
                             
                             {/* Dropdown de Serviços Mobile */}
                             <motion.div
@@ -260,11 +331,19 @@ export const Header = () => {
                                                 setIsMobileServicesOpen(false)
                                                 useMenuMobile()
                                             }}
-                                            className={`flex items-center gap-3 px-4 py-3 text-lg text-white hover:bg-gold-yellow hover:text-black transition-colors rounded-lg ${
+                                            className={`flex items-center gap-3 px-4 py-3 text-lg text-white hover:bg-gold-yellow/20 hover:text-gold-yellow transition-colors rounded-lg ${
                                                 pathname === service.href ? 'bg-gold-yellow/30 text-gold-yellow font-medium' : ''
                                             }`}
                                         >
-                                            <span className="text-2xl">{service.icon}</span>
+                                            {service.icon === 'EN' || service.icon === 'ES' ? (
+                                                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
+                                                    pathname === service.href 
+                                                        ? 'bg-gold-yellow/50 text-white' 
+                                                        : 'bg-gold-yellow/30 text-white'
+                                                }`}>{service.icon}</span>
+                                            ) : (
+                                                <span className="text-2xl">{service.icon}</span>
+                                            )}
                                             <span>{service.title}</span>
                                         </Link>
                                     ))}
@@ -349,12 +428,12 @@ export const Header = () => {
                     left: 0;
                     width: 100%;
                     height: 3px;
-                    background-color: #FFD700;
+                    background-color: #C8C034;
                     border-radius: 2px;
                 }
                 /* Dropdown de serviços */
                 #navigation li.relative:hover > a {
-                    color: #FFD700;
+                    color: #C8C034;
                 }
                 /* Estilo para link ativo no mobile */
                 #mobileNav a.active::after {
@@ -365,12 +444,12 @@ export const Header = () => {
                     transform: translateX(-50%);
                     width: 80%;
                     height: 3px;
-                    background-color: #FFD700;
+                    background-color: #C8C034;
                     border-radius: 2px;
                 }
                 #navigation a.active,
                 #mobileNav a.active {
-                    color: #FFD700;
+                    color: #C8C034;
                 }
             `}</style>
         </motion.header>

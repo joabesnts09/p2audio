@@ -41,15 +41,15 @@ export const ServicePage = ({
     useEffect(() => {
         async function loadAudios() {
             try {
-                // Carregar diretamente do JSON estático (evita usar API route que inclui arquivos grandes)
+                // Carregar diretamente do JSON estático de serviços
                 let audiosData = []
                 try {
-                    const response = await fetch('/data/audio-projects.json', { cache: 'no-store' })
+                    const response = await fetch('/data/services-audio-projects.json', { cache: 'no-store' })
                     if (response.ok) {
                         audiosData = await response.json()
                     }
                 } catch (error) {
-                    console.error('Erro ao carregar áudios do JSON estático:', error)
+                    console.error('Erro ao carregar áudios de serviços do JSON estático:', error)
                 }
 
                 // Filtrar apenas áudios do tipo deste serviço
@@ -68,7 +68,7 @@ export const ServicePage = ({
                         
                         return matches
                     })
-                    .map((audio: any, index: number) => ({
+                    .map((audio: any) => ({
                         id: audio.id,
                         title: audio.title,
                         description: audio.description,
@@ -83,7 +83,7 @@ export const ServicePage = ({
 
                 setAudios(filteredAudios)
             } catch (error) {
-                console.error('Erro ao carregar áudios:', error)
+                console.error('Erro ao carregar áudios de serviços:', error)
             } finally {
                 setIsLoading(false)
             }
@@ -101,25 +101,6 @@ export const ServicePage = ({
     }
 
     const filteredAudios = getFilteredAudios()
-
-    // Agrupar áudios filtrados por tipo
-    const groupAudiosByType = (): Record<string, AudioProject[]> => {
-        const grouped: Record<string, AudioProject[]> = {}
-        
-        filteredAudios.forEach(audio => {
-            if (audio.type) {
-                if (!grouped[audio.type]) {
-                    grouped[audio.type] = []
-                }
-                grouped[audio.type].push(audio)
-            }
-        })
-        
-        return grouped
-    }
-
-    const groupedAudios = groupAudiosByType()
-    const audioTypes = Object.keys(groupedAudios).sort()
 
     return (
         <section className="relative">
@@ -142,7 +123,13 @@ export const ServicePage = ({
                         transition={{ duration: 0.3 }}
                     >
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="text-6xl md:text-7xl">{serviceIcon}</div>
+                            {serviceIcon === 'EN' || serviceIcon === 'ES' ? (
+                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gold-yellow flex items-center justify-center flex-shrink-0">
+                                    <span className="text-4xl md:text-5xl font-bold text-black">{serviceIcon}</span>
+                                </div>
+                            ) : (
+                                <div className="text-6xl md:text-7xl">{serviceIcon}</div>
+                            )}
                             <div>
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4">
                                     {serviceTitle}
@@ -159,7 +146,6 @@ export const ServicePage = ({
             {/* Seção de Conteúdo */}
             <div className="py-20 px-4 md:px-8 lg:px-16 bg-white">
                 <div className="container mx-auto">
-
                     {/* Filtro de Gênero (se houver áudios) */}
                     {audios.length > 0 && (
                         <motion.div
@@ -170,61 +156,61 @@ export const ServicePage = ({
                             className="mb-6 flex items-center justify-between"
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-black">
-                                Projetos de {serviceTitle}
+                                Locutores de {serviceTitle}
                             </h2>
 
-                        {/* Filtro de Gênero */}
-                        <div className="relative">
-                            <button
-                                onClick={() => setIsGenderFilterOpen(!isGenderFilterOpen)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                                    selectedGenderFilter === 'Todos'
-                                        ? 'bg-gray-200 text-gray-700'
-                                        : 'bg-gold-yellow text-black shadow-md'
-                                }`}
-                            >
-                                <span>{selectedGenderFilter === 'Todos' ? 'Gênero' : selectedGenderFilter}</span>
-                                <svg
-                                    className={`w-4 h-4 transition-transform duration-200 ${
-                                        isGenderFilterOpen ? 'rotate-180' : ''
+                            {/* Filtro de Gênero */}
+                            <div className="relative">
+                                <button
+                                    onClick={() => setIsGenderFilterOpen(!isGenderFilterOpen)}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
+                                        selectedGenderFilter === 'Todos'
+                                            ? 'bg-gray-200 text-gray-700'
+                                            : 'bg-gold-yellow text-black shadow-md'
                                     }`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
-                            </button>
+                                    <span>{selectedGenderFilter === 'Todos' ? 'Gênero' : selectedGenderFilter}</span>
+                                    <svg
+                                        className={`w-4 h-4 transition-transform duration-200 ${
+                                            isGenderFilterOpen ? 'rotate-180' : ''
+                                        }`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 9l-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
 
-                            {isGenderFilterOpen && (
-                                <div className="absolute top-full right-0 mt-2 w-40 bg-white border-2 border-gray-300 rounded-lg shadow-lg z-50">
-                                    <div className="py-2">
-                                        {['Todos', 'Homem', 'Mulher'].map((gender) => (
-                                            <button
-                                                key={gender}
-                                                onClick={() => {
-                                                    setSelectedGenderFilter(gender)
-                                                    setIsGenderFilterOpen(false)
-                                                }}
-                                                className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                                                    selectedGenderFilter === gender
-                                                        ? 'bg-gold-yellow/20 text-black font-medium'
-                                                        : 'text-gray-700'
-                                                }`}
-                                            >
-                                                {gender}
-                                            </button>
-                                        ))}
+                                {isGenderFilterOpen && (
+                                    <div className="absolute top-full right-0 mt-2 w-40 bg-white border-2 border-gray-300 rounded-lg shadow-lg z-50">
+                                        <div className="py-2">
+                                            {['Todos', 'Homem', 'Mulher'].map((gender) => (
+                                                <button
+                                                    key={gender}
+                                                    onClick={() => {
+                                                        setSelectedGenderFilter(gender)
+                                                        setIsGenderFilterOpen(false)
+                                                    }}
+                                                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                                                        selectedGenderFilter === gender
+                                                            ? 'bg-gold-yellow/20 text-black font-medium'
+                                                            : 'text-gray-700'
+                                                    }`}
+                                                >
+                                                    {gender}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    </motion.div>
+                                )}
+                            </div>
+                        </motion.div>
                     )}
 
                     {/* Fechar dropdown ao clicar fora */}
@@ -235,7 +221,7 @@ export const ServicePage = ({
                         ></div>
                     )}
 
-                    {/* Lista de Áudios Organizados por Tipo */}
+                    {/* Lista de Áudios */}
                     {isLoading ? (
                         <div className="grid md:grid-cols-2 gap-4">
                             {[1, 2, 3, 4, 5, 6].map((index) => (
@@ -252,14 +238,13 @@ export const ServicePage = ({
                         >
                             <div className="text-6xl mb-4">{serviceIcon}</div>
                             <p className="text-gray-700 text-lg mb-2">
-                                Ainda não temos projetos deste serviço disponíveis.
+                                Ainda não temos locutores deste serviço disponíveis.
                             </p>
                             <p className="text-gray-600">
-                                Em breve, nossos trabalhos estarão disponíveis aqui.
+                                Em breve, nossos locutores estarão disponíveis aqui.
                             </p>
                         </motion.div>
-                    ) : audioTypes.length === 1 ? (
-                        // Se houver apenas um tipo, exibir sem seção separada
+                    ) : (
                         <motion.div
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
@@ -280,43 +265,6 @@ export const ServicePage = ({
                                 />
                             ))}
                         </motion.div>
-                    ) : (
-                        // Se houver múltiplos tipos, organizar por seções
-                        <div className="space-y-8">
-                            {audioTypes.map((audioType, typeIndex) => {
-                                const typeAudios = groupedAudios[audioType] || []
-                                if (typeAudios.length === 0) return null
-
-                                return (
-                                    <motion.div
-                                        key={audioType}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.3, delay: typeIndex * 0.1 }}
-                                        className="bg-gray-50 rounded-xl p-6 border border-gray-200"
-                                    >
-                                        <h4 className="text-2xl md:text-3xl font-bold text-black mb-6 pb-3 border-b-2 border-gray-300">
-                                            {audioType}
-                                        </h4>
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            {typeAudios.map((audio) => (
-                                                <AudioPlayer
-                                                    key={audio.id}
-                                                    id={audio.id}
-                                                    audioUrl={audio.audioUrl}
-                                                    type={audio.type}
-                                                    title={audio.title}
-                                                    description={audio.description}
-                                                    gender={audio.gender}
-                                                    fallbackUrl={audio.fallbackUrl}
-                                                />
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                )
-                            })}
-                        </div>
                     )}
 
                     {/* Call to Action */}

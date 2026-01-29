@@ -59,7 +59,9 @@ const FILE_CATEGORY_MAP = {
 }
 
 function parseFileName(fileName) {
-  const nameWithoutExt = fileName.replace(/\.(wav|mp3|aif|m4a)$/i, '')
+  // Remover "_compressed" do nome para processamento, mas manter no arquivo original
+  const nameWithoutCompressed = fileName.replace(/_compressed/gi, '')
+  const nameWithoutExt = nameWithoutCompressed.replace(/\.(wav|mp3|aif|m4a)$/i, '')
   const normalizedName = nameWithoutExt.toLowerCase().trim()
   
   let type = 'Gravação de Locução'
@@ -141,7 +143,11 @@ async function generateAudioList() {
     )
     
     const audios = audioFiles.map((fileName, index) => {
+      // Remover "_compressed" para processamento do nome
+      const nameForProcessing = fileName.replace(/_compressed/gi, '')
       const { type, client, title, gender } = parseFileName(fileName)
+      
+      // Manter o nome original do arquivo na URL (com _compressed se existir)
       const encodedFileName = encodeURIComponent(fileName)
       const audioUrl = `/Portfólio/${encodedFileName}`
       
@@ -149,9 +155,12 @@ async function generateAudioList() {
       if (client) descriptionParts.push(`Cliente: ${client}`)
       if (gender) descriptionParts.push(`Voz: ${gender}`)
       
+      // Usar título sem "_compressed" para exibição
+      const displayTitle = title || nameForProcessing.replace(/\.(wav|mp3|aif|m4a)$/i, '')
+      
       return {
-        id: `local-${index}-${fileName.replace(/[^a-zA-Z0-9]/g, '-')}`,
-        title: title || fileName,
+        id: `local-${index}-${nameForProcessing.replace(/[^a-zA-Z0-9]/g, '-')}`,
+        title: displayTitle,
         description: descriptionParts.join(' - '),
         audioUrl,
         type,

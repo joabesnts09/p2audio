@@ -9,12 +9,12 @@ module.exports = {
     extend: {
       colors: {
         'dark-charcoal': '#1a1a1a',
-        'gold': '#FFD700',
-        'gold-yellow': '#FFD700',
-        'audio-gold': '#FFD700',
+        'gold': '#C8C034',
+        'gold-yellow': '#C8C034',
+        'audio-gold': '#C8C034',
       },
       backgroundImage: {
-        'gradient-gold': 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+        'gradient-gold': 'linear-gradient(135deg, #C8C034 0%, #B8B024 100%)',
         'gradient-dark': 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
       },
       backgroundImage: {

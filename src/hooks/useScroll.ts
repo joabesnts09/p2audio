@@ -16,7 +16,7 @@ export const useScroll = () => {
 
             // Verificar se está nas páginas de serviços ou portfólio
             const pathname = window.location.pathname
-            const isServicosPage = pathname === '/servicos'
+            const isServicosPage = pathname === '/servicos' || pathname.startsWith('/servicos/')
             const isPortfolioPage = pathname === '/portfolio'
 
             // Se estiver nas páginas de serviços ou portfólio, não manipular esses links

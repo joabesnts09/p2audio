@@ -25,23 +25,31 @@ const services: Service[] = [
             'Narração profissional para vídeos institucionais, treinamentos corporativos e materiais educacionais. Vozes claras e adequadas ao público-alvo, garantindo comunicação eficaz e profissional.',
         icon: '🎙️',
         slug: 'gravacao-de-locucao',
-        serviceType: 'Locução',
+        serviceType: 'Gravação de Locução',
     },
     {
         title: 'Locução em Inglês Nativo',
         description:
             'Locuções em inglês nativo com locutores profissionais dos Estados Unidos e Inglaterra. Qualidade internacional para seus projetos audiovisuais.',
-        icon: '🌎',
+        icon: 'EN',
         slug: 'locucao-em-ingles-nativo',
-        serviceType: 'Locução',
+        serviceType: 'Locução em Inglês Nativo',
     },
     {
         title: 'Locução em Espanhol Nativo',
         description:
             'Locuções em espanhol nativo com locutores profissionais de diversos países de língua espanhola. Qualidade internacional para seus projetos.',
-        icon: '🌎',
+        icon: 'ES',
         slug: 'locucao-em-espanhol-nativo',
-        serviceType: 'Locução',
+        serviceType: 'Locução em Espanhol Nativo',
+    },
+    {
+        title: 'Locução em Outros Idiomas',
+        description:
+            'Locuções profissionais em alemão, francês, árabe, cantonês e outros idiomas. Locutores nativos especializados para projetos internacionais de alta qualidade.',
+        icon: '🌍',
+        slug: 'locucao-em-outros-idiomas',
+        serviceType: 'Locução em Outros Idiomas',
     },
     {
         title: 'E-learning e E-book',
@@ -113,7 +121,13 @@ export const Services = () => {
                         {services.map((service, index) => {
                             const CardContent = (
                                 <div className="flex flex-col items-center text-center h-full">
-                                    <div className="text-4xl md:text-5xl mb-4">{service.icon}</div>
+                                    {service.icon === 'EN' || service.icon === 'ES' ? (
+                                        <div className="w-16 h-16 md:w-20 md:h-20 mb-4 rounded-full bg-gold-yellow flex items-center justify-center">
+                                            <span className="text-2xl md:text-3xl font-bold text-black">{service.icon}</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-4xl md:text-5xl mb-4">{service.icon}</div>
+                                    )}
                                     <h3 className="text-xl md:text-2xl font-bold text-black mb-3">
                                         {service.title}
                                     </h3>

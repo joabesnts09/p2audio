@@ -83,7 +83,9 @@ function parseFileName(fileName: string): {
   title: string
   gender: 'Homem' | 'Mulher' | null
 } {
-  const nameWithoutExt = fileName.replace(/\.(wav|mp3|aif|m4a)$/i, '')
+  // Remover "_compressed" do nome para processamento, mas manter no arquivo original
+  const nameWithoutCompressed = fileName.replace(/_compressed/gi, '')
+  const nameWithoutExt = nameWithoutCompressed.replace(/\.(wav|mp3|aif|m4a)$/i, '')
   const normalizedName = nameWithoutExt.toLowerCase().trim()
   
   let type = 'Gravação de Locução'
