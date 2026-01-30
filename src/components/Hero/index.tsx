@@ -11,7 +11,7 @@ export const Hero = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/assets/bg-home.jpg"
+                    src="/assets/bg-home.png"
                     alt="Estúdio de produção de áudio profissional p2audio - Equipamentos de gravação e edição de alta qualidade"
                     fill
                     className="object-cover"

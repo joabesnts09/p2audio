@@ -30,6 +30,30 @@ const YOUTUBE_VIDEOS = [
     id: 'Ylwc56kYmTU',
     type: 'Produção de Áudio',
   },
+  {
+    id: 'B6zOMIZidd0',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'xqfrIAhoEBA',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'bxgiVf0ohiY',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'oCzyeiX4Z4w',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: '6WNQXbUHQog',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'gP9I1ylfeWo',
+    type: 'Produção de Áudio',
+  },
 ]
 
 /**
@@ -90,8 +114,14 @@ export async function GET() {
       })
     )
     
-    console.log(`[API] Carregados ${videos.length} vídeos do YouTube com títulos reais`)
-    return NextResponse.json(videos)
+    // Filtrar vídeo "Nós Somos a Mata Atlântica"
+    const filteredVideos = videos.filter(video => 
+      !video.title.toLowerCase().includes('nós somos a mata atlântica') &&
+      !video.title.toLowerCase().includes('nos somos a mata atlantica')
+    )
+    
+    console.log(`[API] Carregados ${filteredVideos.length} vídeos do YouTube com títulos reais`)
+    return NextResponse.json(filteredVideos)
   } catch (error) {
     console.error('[API] Erro ao buscar vídeos do YouTube:', error)
     // Em caso de erro, retornar dados básicos

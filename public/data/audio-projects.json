@@ -8,8 +8,8 @@
     "client": "Accenture",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.858Z",
-    "updatedAt": "2026-01-29T21:54:01.858Z"
+    "createdAt": "2026-01-30T00:09:50.831Z",
+    "updatedAt": "2026-01-30T00:09:50.832Z"
   },
   {
     "id": "local-1-Accenture---Suzano-mp3",
@@ -20,172 +20,187 @@
     "client": "Accenture",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.859Z",
-    "updatedAt": "2026-01-29T21:54:01.859Z"
+    "createdAt": "2026-01-30T00:09:50.832Z",
+    "updatedAt": "2026-01-30T00:09:50.832Z"
   },
   {
     "id": "local-2-Atala-Engenharia--Espera-telef-nica-mp3",
     "title": "Espera telefônica",
-    "description": "Espera Telefônica e URA - Cliente: Atala Engenharia",
+    "description": "Espera Telefônica e URA - Cliente: Atala Engenharia - Voz: Homem",
     "audioUrl": "/Portfólio/Atala%20Engenharia_%20Espera%20telef%C3%B4nica_compressed.mp3",
     "type": "Espera Telefônica e URA",
     "client": "Atala Engenharia",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.859Z",
-    "updatedAt": "2026-01-29T21:54:01.859Z"
+    "createdAt": "2026-01-30T00:09:50.832Z",
+    "updatedAt": "2026-01-30T00:09:50.832Z"
   },
   {
     "id": "local-3-Casa-de-v-deo---J-J-Apertura--Up-To-Date---FEV-2025-esp-mp3",
     "title": "J&J - Apertura  Up To Date - FEV 2025 - esp",
-    "description": "Espera Telefônica e URA - Cliente: Casa de vídeo",
+    "description": "Locução em Espanhol Nativo - Cliente: Casa de vídeo - Voz: Homem",
     "audioUrl": "/Portfólio/Casa%20de%20v%C3%ADdeo%20-%20J%26J_Apertura%20%20Up%20To%20Date%20-%20FEV%202025-esp_compressed.mp3",
-    "type": "Espera Telefônica e URA",
+    "type": "Locução em Espanhol Nativo",
     "client": "Casa de vídeo",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.859Z",
-    "updatedAt": "2026-01-29T21:54:01.859Z"
+    "createdAt": "2026-01-30T00:09:50.833Z",
+    "updatedAt": "2026-01-30T00:09:50.833Z"
   },
   {
     "id": "local-4-Complexo-portu-rio-da-Bahia-da-Babitonga-mp3",
     "title": "Complexo portuário da Bahia da Babitonga",
-    "description": "Gravação de Locução",
+    "description": "Gravação de Locução - Voz: Mulher",
     "audioUrl": "/Portfólio/Complexo%20portu%C3%A1rio%20da%20Bahia%20da%20Babitonga_compressed.mp3",
     "type": "Gravação de Locução",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.860Z",
-    "updatedAt": "2026-01-29T21:54:01.860Z"
+    "createdAt": "2026-01-30T00:09:50.833Z",
+    "updatedAt": "2026-01-30T00:09:50.833Z"
   },
   {
     "id": "local-5-Embratur-Sol-e-Paia-ES-mp3",
     "title": "Sol e Paia - ES",
-    "description": "Locução em Espanhol Nativo - Cliente: Embratur",
+    "description": "Locução em Espanhol Nativo - Cliente: Embratur - Voz: Mulher",
     "audioUrl": "/Portfólio/Embratur_Sol%20e%20Paia_ES_compressed.mp3",
     "type": "Locução em Espanhol Nativo",
     "client": "Embratur",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.860Z",
-    "updatedAt": "2026-01-29T21:54:01.860Z"
+    "createdAt": "2026-01-30T00:09:50.833Z",
+    "updatedAt": "2026-01-30T00:09:50.833Z"
   },
   {
     "id": "local-6-Embratur-Turismo-Cultural-ES-mp3",
     "title": "Turismo Cultural - ES",
-    "description": "Espera Telefônica e URA - Cliente: Embratur",
+    "description": "Locução em Espanhol Nativo - Cliente: Embratur - Voz: Mulher",
     "audioUrl": "/Portfólio/Embratur_Turismo%20Cultural_ES_compressed.mp3",
-    "type": "Espera Telefônica e URA",
+    "type": "Locução em Espanhol Nativo",
     "client": "Embratur",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.860Z",
-    "updatedAt": "2026-01-29T21:54:01.860Z"
+    "createdAt": "2026-01-30T00:09:50.833Z",
+    "updatedAt": "2026-01-30T00:09:50.833Z"
   },
   {
     "id": "local-7-Embratur-Turismo-N-utico-ES-mp3",
     "title": "Turismo Náutico - ES",
-    "description": "Locução em Espanhol Nativo - Cliente: Embratur",
+    "description": "Locução em Espanhol Nativo - Cliente: Embratur - Voz: Mulher",
     "audioUrl": "/Portfólio/Embratur_Turismo%20N%C3%A1utico_ES_compressed.mp3",
     "type": "Locução em Espanhol Nativo",
     "client": "Embratur",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.860Z",
-    "updatedAt": "2026-01-29T21:54:01.860Z"
+    "createdAt": "2026-01-30T00:09:50.834Z",
+    "updatedAt": "2026-01-30T00:09:50.834Z"
   },
   {
     "id": "local-8-Foundever---Espera-telef-nica-P-G-mp3",
     "title": "Espera telefônica P&G",
-    "description": "Espera Telefônica e URA - Cliente: Foundever",
+    "description": "Espera Telefônica e URA - Cliente: Foundever - Voz: Homem",
     "audioUrl": "/Portfólio/Foundever%20-%20Espera%20telef%C3%B4nica%20P%26G_compressed.mp3",
     "type": "Espera Telefônica e URA",
     "client": "Foundever",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.860Z",
-    "updatedAt": "2026-01-29T21:54:01.860Z"
+    "createdAt": "2026-01-30T00:09:50.834Z",
+    "updatedAt": "2026-01-30T00:09:50.834Z"
   },
   {
     "id": "local-9-Gaau---Oracle---EN-mp3",
     "title": "Oracle - EN",
-    "description": "Gravação de Locução - Cliente: Gaau",
+    "description": "Locução em Inglês Nativo - Cliente: Gaau - Voz: Homem",
     "audioUrl": "/Portfólio/Gaau%20-%20Oracle%20-%20EN_compressed.mp3",
-    "type": "Gravação de Locução",
+    "type": "Locução em Inglês Nativo",
     "client": "Gaau",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.834Z",
+    "updatedAt": "2026-01-30T00:09:50.834Z"
   },
   {
     "id": "local-10-Gaau---Oracle-Einstein-mp3",
     "title": "Oracle - Einstein",
-    "description": "Gravação de Locução - Cliente: Gaau",
+    "description": "Gravação de Locução - Cliente: Gaau - Voz: Homem",
     "audioUrl": "/Portfólio/Gaau%20-%20Oracle_Einstein_compressed.mp3",
     "type": "Gravação de Locução",
     "client": "Gaau",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.834Z",
+    "updatedAt": "2026-01-30T00:09:50.834Z"
   },
   {
     "id": "local-11-Graphis---Ach--mp3",
     "title": "Achè",
-    "description": "Gravação de Locução - Cliente: Graphis",
+    "description": "Gravação de Locução - Cliente: Graphis - Voz: Homem",
     "audioUrl": "/Portfólio/Graphis%20-%20Ach%C3%A8_compressed.mp3",
     "type": "Gravação de Locução",
     "client": "Graphis",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.835Z",
+    "updatedAt": "2026-01-30T00:09:50.835Z"
   },
   {
     "id": "local-12-Hoop---Braskem-mp3",
     "title": "Braskem",
-    "description": "Gravação de Locução - Cliente: Hoop",
+    "description": "Locução em Inglês Nativo - Cliente: Hoop - Voz: Homem",
     "audioUrl": "/Portfólio/Hoop%20-%20Braskem_compressed.mp3",
-    "type": "Gravação de Locução",
+    "type": "Locução em Inglês Nativo",
     "client": "Hoop",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.835Z",
+    "updatedAt": "2026-01-30T00:09:50.835Z"
   },
   {
     "id": "local-13-Liz-Manifesto---Mulher-Madura-mp3",
     "title": "Mulher Madura",
-    "description": "Espera Telefônica e URA - Cliente: Liz Manifesto",
+    "description": "Gravação de Locução - Cliente: Liz Manifesto - Voz: Mulher",
     "audioUrl": "/Portfólio/Liz%20Manifesto%20-%20Mulher%20Madura_compressed.mp3",
-    "type": "Espera Telefônica e URA",
+    "type": "Gravação de Locução",
     "client": "Liz Manifesto",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.835Z",
+    "updatedAt": "2026-01-30T00:09:50.835Z"
   },
   {
     "id": "local-14-MOV-Locadora---Deloitte-Transformando-a-sa-de-no-Brasil--EN-mp3",
     "title": "Deloitte Transformando a saúde no Brasil - EN",
-    "description": "Gravação de Locução - Cliente: MOV Locadora",
+    "description": "Locução em Inglês Nativo - Cliente: MOV Locadora - Voz: Mulher",
     "audioUrl": "/Portfólio/MOV%20Locadora%20-%20Deloitte%20Transformando%20a%20sa%C3%BAde%20no%20Brasil-%20EN_compressed.mp3",
-    "type": "Gravação de Locução",
+    "type": "Locução em Inglês Nativo",
     "client": "MOV Locadora",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.835Z",
+    "updatedAt": "2026-01-30T00:09:50.835Z"
   },
   {
     "id": "local-15-Movietwo---Vediplast---ES-mp3",
     "title": "Vediplast - ES",
-    "description": "Gravação de Locução - Cliente: Movietwo",
+    "description": "Locução em Espanhol Nativo - Cliente: Movietwo - Voz: Homem",
     "audioUrl": "/Portfólio/Movietwo%20-%20Vediplast%20-%20ES_compressed.mp3",
-    "type": "Gravação de Locução",
+    "type": "Locução em Espanhol Nativo",
     "client": "Movietwo",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.836Z",
+    "updatedAt": "2026-01-30T00:09:50.836Z"
   },
   {
     "id": "local-16-Nordisk---PT-mp3",
     "title": "PT",
-    "description": "Gravação de Locução - Cliente: Nordisk",
+    "description": "Gravação de Locução - Cliente: Nordisk - Voz: Mulher",
     "audioUrl": "/Portfólio/Nordisk%20-%20PT_compressed.mp3",
     "type": "Gravação de Locução",
     "client": "Nordisk",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.861Z",
-    "updatedAt": "2026-01-29T21:54:01.861Z"
+    "createdAt": "2026-01-30T00:09:50.836Z",
+    "updatedAt": "2026-01-30T00:09:50.836Z"
   },
   {
     "id": "local-17-OSESP---MASP-mp3",
@@ -196,19 +211,20 @@
     "client": "OSESP",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.836Z",
+    "updatedAt": "2026-01-30T00:09:50.836Z"
   },
   {
     "id": "local-18-PUCPR-Campanha-2024-mp3",
     "title": "Campanha 2024",
-    "description": "Gravação de Locução - Cliente: PUCPR",
+    "description": "Gravação de Locução - Cliente: PUCPR - Voz: Mulher",
     "audioUrl": "/Portfólio/PUCPR_Campanha%202024_compressed.mp3",
     "type": "Gravação de Locução",
     "client": "PUCPR",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.836Z",
+    "updatedAt": "2026-01-30T00:09:50.836Z"
   },
   {
     "id": "local-19-Picadilly-mp3",
@@ -218,19 +234,20 @@
     "type": "Gravação de Locução",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-20-Studio-750---LinkedIn-for-Nonprofits---Ingl-s-mp3",
     "title": "LinkedIn for Nonprofits",
-    "description": "Locução em Inglês Nativo - Cliente: Studio 750",
+    "description": "Locução em Inglês Nativo - Cliente: Studio 750 - Voz: Mulher",
     "audioUrl": "/Portfólio/Studio%20750%20-%20LinkedIn%20for%20Nonprofits%20-%20Ingl%C3%AAs_compressed.mp3",
     "type": "Locução em Inglês Nativo",
     "client": "Studio 750",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-21-Studio-750---Linkedin---Alem-o-mp3",
@@ -241,30 +258,32 @@
     "client": "Studio 750",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-22-Studio-750---Linkedin---Portugu-s-mp3",
     "title": "Linkedin",
-    "description": "Gravação de Locução - Cliente: Studio 750",
+    "description": "Gravação de Locução - Cliente: Studio 750 - Voz: Mulher",
     "audioUrl": "/Portfólio/Studio%20750%20-%20Linkedin%20-%20Portugu%C3%AAs_compressed.mp3",
     "type": "Gravação de Locução",
     "client": "Studio 750",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-23-Studio-750---Linkedin-for-Non-Profits---Espanhol-mp3",
     "title": "Linkedin for Non - Profits",
-    "description": "Locução em Espanhol Nativo - Cliente: Studio 750",
+    "description": "Locução em Espanhol Nativo - Cliente: Studio 750 - Voz: Mulher",
     "audioUrl": "/Portfólio/Studio%20750%20-%20Linkedin%20for%20Non-Profits%20-%20Espanhol_compressed.mp3",
     "type": "Locução em Espanhol Nativo",
     "client": "Studio 750",
+    "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-24-Studio-750---Linkedin-for-Non-Profits---Franc-s-mp3",
@@ -275,29 +294,31 @@
     "client": "Studio 750",
     "gender": "Mulher",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.862Z",
-    "updatedAt": "2026-01-29T21:54:01.862Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-25-Uau-Hub---Britania---EN-mp3",
     "title": "Britania - EN",
-    "description": "Gravação de Locução - Cliente: Uau Hub",
+    "description": "Locução em Inglês Nativo - Cliente: Uau Hub - Voz: Homem",
     "audioUrl": "/Portfólio/Uau%20Hub%20-%20Britania%20-%20EN_compressed.mp3",
-    "type": "Gravação de Locução",
+    "type": "Locução em Inglês Nativo",
     "client": "Uau Hub",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.863Z",
-    "updatedAt": "2026-01-29T21:54:01.863Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   },
   {
     "id": "local-26-Unica---Cana-de-A--car-mp3",
     "title": "Cana de Açúcar",
-    "description": "Gravação de Locução - Cliente: Unica",
+    "description": "Gravação de Locução - Cliente: Unica - Voz: Homem",
     "audioUrl": "/Portfólio/Unica%20-%20Cana%20de%20A%C3%A7%C3%BAcar_compressed.mp3",
     "type": "Gravação de Locução",
     "client": "Unica",
+    "gender": "Homem",
     "coverImage": null,
-    "createdAt": "2026-01-29T21:54:01.863Z",
-    "updatedAt": "2026-01-29T21:54:01.863Z"
+    "createdAt": "2026-01-30T00:09:50.837Z",
+    "updatedAt": "2026-01-30T00:09:50.837Z"
   }
 ]

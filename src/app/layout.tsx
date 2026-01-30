@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import { StructuredData } from '@/components/SEO/StructuredData'
+import { ErrorSuppressor } from '@/components/ErrorSuppressor'
 
 const inter = Inter({ 
   weight: ['400', '500', '700'],
@@ -93,6 +94,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="32x32"/>
       </head>
       <body className={inter.className}>
+        <ErrorSuppressor />
         <StructuredData />
         {children}
         <Toaster

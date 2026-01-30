@@ -40,6 +40,17 @@ export const Header = () => {
     const pathname = usePathname()
     const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false)
     const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false)
+    const [isMounted, setIsMounted] = useState(false)
+
+    // Marcar como montado após hidratação para evitar mismatch de classes
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    // Função para obter classe "active" apenas após hidratação
+    const getActiveClass = (isActive: boolean) => {
+        return isMounted && isActive ? 'active' : ''
+    }
 
     // Função para retornar o href correto para seções da home
     const getSectionHref = (section: string) => {
@@ -118,8 +129,14 @@ export const Header = () => {
         >
             <div id="header" className="container mx-auto px-4 md:px-8 lg:px-16 py-6 flex items-center justify-between">
                 <a href="/" className="flex items-center gap-3" aria-label="P2 Áudio - Página inicial">
-                    <Image src={logo} alt="Logo P2 Áudio - Produtora de Áudio Profissional" width={50} height={50} />
-
+                    <Image 
+                        src={logo} 
+                        alt="Logo P2 Áudio - Produtora de Áudio Profissional" 
+                        width={50} 
+                        height={50}
+                        priority
+                        style={{ height: 'auto' }}
+                    />
                 </a>
 
                 <div className="flex items-center gap-4">
@@ -133,7 +150,7 @@ export const Header = () => {
                                 id="nav-inicio"
                                 href="/" 
                                 className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
-                                    pathname === '/' && !pathname?.startsWith('/servicos') ? 'active' : ''
+                                    getActiveClass(pathname === '/' && !pathname?.startsWith('/servicos'))
                                 }`}
                             >
                                 Home
@@ -144,7 +161,7 @@ export const Header = () => {
                                 <Link
                                     href="/servicos"
                                     className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
-                                        pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
+                                        getActiveClass(pathname === '/servicos' || pathname?.startsWith('/servicos/'))
                                     }`}
                                 >
                                     Serviços
@@ -215,7 +232,7 @@ export const Header = () => {
                                 id="nav-portfolio"
                                 href="/portfolio" 
                                 className={`text-white hover:text-gold-yellow transition-colors text-base font-medium relative py-2 px-1 uppercase ${
-                                    pathname === '/portfolio' ? 'active' : ''
+                                    getActiveClass(pathname === '/portfolio')
                                 }`}
                             >
                                 Portfólio
@@ -268,7 +285,7 @@ export const Header = () => {
                             href="/" 
                             onClick={useMenuMobile} 
                             className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
-                                pathname === '/' && !pathname?.startsWith('/servicos') ? 'active' : ''
+                                getActiveClass(pathname === '/' && !pathname?.startsWith('/servicos'))
                             }`}
                         >
                             Home
@@ -281,7 +298,7 @@ export const Header = () => {
                                     href="/servicos"
                                     onClick={useMenuMobile}
                                     className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
-                                        pathname === '/servicos' || pathname?.startsWith('/servicos/') ? 'active' : ''
+                                        getActiveClass(pathname === '/servicos' || pathname?.startsWith('/servicos/'))
                                     }`}
                                 >
                                     Serviços
@@ -357,7 +374,7 @@ export const Header = () => {
                             href="/portfolio" 
                             onClick={useMenuMobile} 
                             className={`text-white text-2xl font-medium hover:text-gold-yellow transition-colors relative py-2 px-1 uppercase ${
-                                pathname === '/portfolio' ? 'active' : ''
+                                getActiveClass(pathname === '/portfolio')
                             }`}
                         >
                             Portfólio

@@ -34,9 +34,9 @@ function normalizeId(id: string | number, index: number): number {
 
 // Ordem das seções de áudio
 const AUDIO_SECTIONS_ORDER = [
+    'Gravação de Locução',
     'Locução em Espanhol Nativo',
     'Locução em Inglês Nativo',
-    'Gravação de Locução',
     'Locução em Alemão',
     'Locução em Francês',
     'Locução Português Portugal',

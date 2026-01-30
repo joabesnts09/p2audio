@@ -16,27 +16,60 @@ function normalizeForMatch(str) {
     .trim()
 }
 
-// Mapeamento de arquivos (mesmo do route.ts)
+// Mapeamento de arquivos com tipo e gênero
+// Baseado na lista fornecida: M = Mulher, H = Homem
 const FILE_CATEGORY_MAP = {
+  // Locução em Espanhol Nativo - Todos Mulher (M)
   'embratur - visit brasil_espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'embratur': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' }, // Para arquivos Embratur com ES
   'eurofarma_espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'eurofarma': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
   'som livre_espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'som livre': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  
+  // Locução em Inglês Nativo
+  'accenture - santander': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
   'accenture - santander_inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
   'basf': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'braskem': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'britania - en': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'britania - inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'britania': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'casa de vídeo': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'casa de vídeo - inglês britânico': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'colgate_inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'colgate': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'dewalt_ingles': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
-  'edelman - visit dubai_inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'dewalt': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'edelman - visit dubai_inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'edelman': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'facebook - ccxp_inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'facebook': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
   'google plex _inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'google plex': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'google': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
   'johson & johnson': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'johson': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'oracle - en': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'oracle-inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'oracle': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'senai cimatec mar_inglês britanico': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'senai': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
   'sesi_curso de inglês': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'sesi': { type: 'Locução em Inglês Nativo', gender: 'Homem' },
+  'mov locadora - deloitte transformando a saúde no brasil - en': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'deloitte transformando a saúde no brasil - en': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'deloitte transformando a saúde no brasil': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'deloitte': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'mov locadora': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  
+  // Gravação de Locução
   'accenture - suzano': { type: 'Gravação de Locução', gender: 'Mulher' },
   'ajinomoto food services': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'ajinomoto': { type: 'Gravação de Locução', gender: 'Mulher' },
   'albert einstein - endocrinologia': { type: 'Gravação de Locução', gender: 'Homem' },
+  'albert einstein': { type: 'Gravação de Locução', gender: 'Homem' },
+  'einstein': { type: 'Gravação de Locução', gender: 'Homem' },
   'ambev': { type: 'Gravação de Locução', gender: 'Homem' },
   'duracell': { type: 'Gravação de Locução', gender: 'Homem' },
   'gerdau': { type: 'Gravação de Locução', gender: 'Homem' },
@@ -51,11 +84,80 @@ const FILE_CATEGORY_MAP = {
   'siemens': { type: 'Gravação de Locução', gender: 'Homem' },
   'tnt': { type: 'Gravação de Locução', gender: 'Mulher' },
   'vidara cultural paulista': { type: 'Gravação de Locução', gender: 'Homem' },
+  'vidara': { type: 'Gravação de Locução', gender: 'Homem' },
   'volks e  accenture': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'volks': { type: 'Gravação de Locução', gender: 'Mulher' },
   'volvo cars 02': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'volvo': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'achè': { type: 'Gravação de Locução', gender: 'Homem' },
+  'ache': { type: 'Gravação de Locução', gender: 'Homem' },
+  'graphis - achè': { type: 'Gravação de Locução', gender: 'Homem' },
+  'graphis': { type: 'Gravação de Locução', gender: 'Homem' },
+  'complexo portuário da bahia da babitonga': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'complexo portuário': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'pt': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'campanha 2024': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'pucpr': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'cana de açúcar': { type: 'Gravação de Locução', gender: 'Homem' },
+  'cana de acucar': { type: 'Gravação de Locução', gender: 'Homem' },
+  'mulher madura': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'liz manifesto - mulher madura': { type: 'Gravação de Locução', gender: 'Mulher' },
+  
+  // Locução em Alemão
   'linkedin - alemão': { type: 'Locução em Alemão', gender: 'Mulher' },
+  'studio 750 - linkedin - alemão': { type: 'Locução em Alemão', gender: 'Mulher' },
+  
+  // Locução em Francês - Linkedin for Non-Profits
   'linkedin for non-profits - francês': { type: 'Locução em Francês', gender: 'Mulher' },
+  'linkedin for non - profits': { type: 'Locução em Francês', gender: 'Mulher' },
+  'studio 750 - linkedin for non-profits - francês': { type: 'Locução em Francês', gender: 'Mulher' },
+  
+  // Locução em Espanhol Nativo - Linkedin for Non-Profits e J&J
+  'casa de vídeo - j&j_apertura up to date - fev 2025-esp': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  'casa de vídeo - j&j': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  'j&j_apertura up to date - fev 2025-esp': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  'j&j - apertura up to date - fev 2025 - esp': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  'studio 750 - linkedin for non-profits - espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'linkedin for non-profits - espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  'linkedin for non - profits - espanhol': { type: 'Locução em Espanhol Nativo', gender: 'Mulher' },
+  
+  // Locução em Inglês Nativo - LinkedIn for Nonprofits
+  'studio 750 - linkedin for nonprofits - inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  'linkedin for nonprofits - inglês': { type: 'Locução em Inglês Nativo', gender: 'Mulher' },
+  
+  // Locução em Francês - Linkedin for Non-Profits
+  'studio 750 - linkedin for non-profits - francês': { type: 'Locução em Francês', gender: 'Mulher' },
+  'linkedin for non-profits - francês': { type: 'Locução em Francês', gender: 'Mulher' },
+  
+  // Gravação de Locução - Linkedin (português)
+  'studio 750 - linkedin - português': { type: 'Gravação de Locução', gender: 'Mulher' },
+  'linkedin - português': { type: 'Gravação de Locução', gender: 'Mulher' },
+  
+  // Locução Português Portugal
   'pepsico_português de portugal': { type: 'Locução Português Portugal', gender: 'Mulher' },
+  'pepsico': { type: 'Locução Português Portugal', gender: 'Mulher' },
+  
+  // Espera Telefônica e URA
+  'espera telefônica p&g': { type: 'Espera Telefônica e URA', gender: 'Homem' },
+  'foundever - espera telefônica p&g': { type: 'Espera Telefônica e URA', gender: 'Homem' },
+  'espera telefônica': { type: 'Espera Telefônica e URA', gender: 'Homem' },
+  'atala engenharia_ espera telefônica': { type: 'Espera Telefônica e URA', gender: 'Homem' },
+  
+  // Locução em Espanhol Nativo - arquivos adicionais
+  'casa de vídeo - j&j': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  'vediplast - es': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  'vediplast': { type: 'Locução em Espanhol Nativo', gender: 'Homem' },
+  
+  // Gravação de Locução - adicionais encontrados (sem gênero na lista fornecida)
+  'gaau': { type: 'Gravação de Locução', gender: null },
+  'graphis': { type: 'Gravação de Locução', gender: null },
+  'hoop': { type: 'Gravação de Locução', gender: null },
+  'liz manifesto': { type: 'Gravação de Locução', gender: null },
+  'mov locadora': { type: 'Gravação de Locução', gender: null },
+  'movietwo': { type: 'Gravação de Locução', gender: null },
+  'pucpr': { type: 'Gravação de Locução', gender: null },
+  'uau hub': { type: 'Gravação de Locução', gender: null },
+  'unica': { type: 'Gravação de Locução', gender: null },
 }
 
 function parseFileName(fileName) {
@@ -80,7 +182,13 @@ function parseFileName(fileName) {
   const normalizedForMatch = normalizeForMatch(nameWithoutExt)
   
   let foundInMap = false
-  for (const [mapKey, mapping] of Object.entries(FILE_CATEGORY_MAP)) {
+  // Ordenar o mapeamento para verificar entradas mais específicas primeiro
+  const sortedEntries = Object.entries(FILE_CATEGORY_MAP).sort((a, b) => {
+    // Entradas mais longas (específicas) primeiro
+    return b[0].length - a[0].length
+  })
+  
+  for (const [mapKey, mapping] of sortedEntries) {
     const normalizedMapKey = normalizeForMatch(mapKey)
     if (normalizedForMatch === normalizedMapKey || 
         normalizedForMatch.includes(normalizedMapKey) ||
@@ -95,9 +203,9 @@ function parseFileName(fileName) {
   }
   
   if (!foundInMap) {
-    if (/espera telefônica|espera telefonica|ura/i.test(nameWithoutExt)) {
-      type = 'Espera Telefônica e URA'
-    } else if (/espanhol|_espanhol|espanhol_|_es\b|es_/i.test(nameWithoutExt)) {
+    // Verificar indicadores de idioma no nome (prioridade)
+    // Verificar espanhol primeiro (pode ter "esp" que não é "es" completo)
+    if (/espanhol|_espanhol|espanhol_|_es\b|es_|esp\b|_esp/i.test(nameWithoutExt)) {
       type = 'Locução em Espanhol Nativo'
     } else if (/inglês|ingles|inglés|_inglês|_ingles|_inglés|britânico|britanico|british|_en\b|en_|inglês britanico|inglês britânico/i.test(nameWithoutExt)) {
       type = 'Locução em Inglês Nativo'
@@ -107,6 +215,18 @@ function parseFileName(fileName) {
       type = 'Locução em Francês'
     } else if (/português de portugal|portugues de portugal|português portugal|pt-pt/i.test(nameWithoutExt)) {
       type = 'Locução Português Portugal'
+    } else if (/espera telefônica|espera telefonica|ura/i.test(nameWithoutExt)) {
+      type = 'Espera Telefônica e URA'
+      // Definir gênero padrão para Espera Telefônica se não encontrado no mapa
+      if (!gender) {
+        if (/p&g/i.test(nameWithoutExt)) {
+          gender = 'Homem'
+        } else if (/atala/i.test(nameWithoutExt)) {
+          gender = 'Homem'
+        } else {
+          gender = 'Homem' // Padrão conforme solicitado
+        }
+      }
     }
   }
   
