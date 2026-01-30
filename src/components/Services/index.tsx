@@ -96,9 +96,9 @@ export const Services = () => {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-center"
+                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-gold-yellow mb-6 text-center"
                     >
-                        Serviços - <span className="text-gold-yellow">P2 Áudio</span>
+                        Serviços
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: -10 }}
