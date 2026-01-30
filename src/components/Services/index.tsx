@@ -98,7 +98,7 @@ export const Services = () => {
                         transition={{ duration: 0.3 }}
                         className="text-4xl md:text-5xl lg:text-6xl font-bold text-gold-yellow mb-6 text-center"
                     >
-                        Serviços
+                        Serviços<span className="sr-only"> - P2 Áudio</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: -10 }}
