@@ -1,6 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Headers para controle de cache dos arquivos JSON
+  async headers() {
+    return [
+      {
+        source: '/data/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+        ],
+      },
+    ]
+  },
   // Garantir que arquivos estáticos grandes não sejam incluídos no bundle das funções serverless
   webpack: (config, { isServer, webpack }) => {
     if (isServer) {
