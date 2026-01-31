@@ -24,6 +24,7 @@ interface ServicePageProps {
     serviceIcon: string
     serviceType: string // Tipo de áudio para filtrar
     metaDescription?: string
+    sectionTitle?: string // Título customizado para a seção de áudios
 }
 
 export const ServicePage = ({
@@ -32,6 +33,7 @@ export const ServicePage = ({
     serviceIcon,
     serviceType,
     metaDescription,
+    sectionTitle,
 }: ServicePageProps) => {
     const [audios, setAudios] = useState<AudioProject[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -156,7 +158,7 @@ export const ServicePage = ({
                             className="mb-6 flex items-center justify-between"
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-black">
-                                Locutores de {serviceTitle}
+                                {sectionTitle || `${serviceTitle}`}
                             </h2>
 
                             {/* Filtro de Gênero */}

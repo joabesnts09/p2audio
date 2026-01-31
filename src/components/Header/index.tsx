@@ -14,8 +14,8 @@ const servicesDropdown = [
         icon: '📞',
     },
     {
-        title: 'Gravação de Locução',
-        href: '/servicos/gravacao-de-locucao',
+        title: 'Locução em Português',
+        href: '/servicos/locucao-em-portugues',
         icon: '🎙️',
     },
     {

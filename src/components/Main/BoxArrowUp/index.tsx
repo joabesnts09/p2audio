@@ -3,7 +3,7 @@
 export const BoxArrowUp = () => {
     // Número do WhatsApp (formato: código do país + DDD + número sem caracteres especiais)
     const whatsappNumber = '553598397070'
-    const whatsappMessage = encodeURIComponent('Olá! Gostaria de saber mais sobre os serviços da p2audio.')
+    const whatsappMessage = encodeURIComponent('Olá! Gostaria de saber mais sobre os serviços da P2.')
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
     return (

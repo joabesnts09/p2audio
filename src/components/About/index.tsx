@@ -22,12 +22,17 @@ export const About = () => {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="max-w-3xl mx-auto text-center"
                 >
-                    <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                        A p2audio é uma produtora de áudio profissional dedicada a transformar ideias em experiências sonoras memoráveis. 
-                        Com anos de experiência no mercado, oferecemos soluções completas em produção de áudio, casting de vozes e tradução.
+                    <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-6">
+                        A <span className="text-gold-yellow font-semibold">P2</span> é uma produtora de áudio profissional dedicada a{' '}
+                        <span className="text-white font-medium">transformar ideias em experiências sonoras memoráveis</span>.
                     </p>
-                    <p className="text-gray-300 text-lg leading-relaxed">
-                        Nossa missão é entregar qualidade profissional em cada projeto, sempre respeitando o orçamento e os prazos dos nossos clientes.
+                    <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-6">
+                        Com <span className="text-gold-yellow font-semibold">10 anos de experiência</span> no mercado fonográfico, 
+                        oferecemos soluções completas em produção de áudio, casting de vozes e tradução.
+                    </p>
+                    <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
+                        Nossa missão é entregar <span className="text-white font-medium">qualidade profissional</span> em cada projeto, 
+                        sempre respeitando o orçamento e os prazos dos nossos clientes.
                     </p>
                 </motion.div>
             </div>

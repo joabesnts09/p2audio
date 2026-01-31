@@ -20,11 +20,11 @@ const services: Service[] = [
         serviceType: 'Espera Telefônica e URA',
     },
     {
-        title: 'Gravação de Locução',
+        title: 'Locução em Português',
         description:
-            'Narração profissional para vídeos institucionais, treinamentos corporativos e materiais educacionais. Vozes claras e adequadas ao público-alvo, garantindo comunicação eficaz e profissional.',
+            'Narração profissional para vídeos institucionais, treinamentos corporativos, e-learning, dublagens, Voice Over, Spots, dentre outros. Confira alguns talentos do nosso banco de vozes.',
         icon: '🎙️',
-        slug: 'gravacao-de-locucao',
+        slug: 'locucao-em-portugues',
         serviceType: 'Gravação de Locução',
     },
     {
@@ -66,7 +66,7 @@ const services: Service[] = [
     {
         title: 'Spot Publicitário',
         description:
-            'Criação e produção de spots publicitários para rádio, TV e mídias digitais. Desenvolvimento de roteiros criativos e produção de áudio de alta qualidade que impacta e converte.',
+            'Criação e produção de spots publicitários para rádio, TV e mídias digitais. Produzimos áudio de alta qualidade que impacta e converte.',
         icon: '📻',
     },
     {

@@ -21,7 +21,7 @@ export default function LocucaoInglesNativoPage() {
       <main className="min-h-screen pt-32 bg-white">
           <ServicePage
             serviceTitle="Locução em Inglês Nativo"
-            serviceDescription="Seja bem-vindo(a) à nossa página de locução em inglês nativo. Aqui você poderá conferir alguns locutores do nosso banco de vozes profissionais dos Estados Unidos e Inglaterra. Trabalhamos exclusivamente com locutores nativos, garantindo pronúncia perfeita, sotaque autêntico e naturalidade na comunicação. Nossos profissionais são experientes em diversos segmentos: institucional, comercial, educacional e muito mais."
+            serviceDescription="Seja bem-vindo(a) à nossa página de locução em inglês nativo. Aqui você poderá conferir alguns locutores do nosso banco de vozes profissionais dos Estados Unidos e Inglaterra. Trabalhamos exclusivamente com locutores nativos, garantindo pronúncia perfeita, sotaque autêntico e naturalidade na comunicação."
             serviceIcon="EN"
             serviceType="Locução em Inglês Nativo"
             metaDescription="Locuções em inglês nativo com locutores profissionais dos Estados Unidos e Inglaterra."
