@@ -44,9 +44,14 @@ export const ServicePage = ({
         async function loadAudios() {
             try {
                 // Carregar diretamente do JSON estático de serviços
+                // Adiciona timestamp para evitar cache do navegador/CDN
                 let audiosData = []
                 try {
-                    const response = await fetch('/data/services-audio-projects.json', { cache: 'no-store' })
+                    const timestamp = Date.now()
+                    const response = await fetch(`/data/services-audio-projects.json?v=${timestamp}`, { 
+                        cache: 'no-store',
+                        headers: { 'Cache-Control': 'no-cache' }
+                    })
                     if (response.ok) {
                         audiosData = await response.json()
                     }
