@@ -66,20 +66,17 @@ export const Portfolio = () => {
 
                 setVideos(formattedVideos)
 
-                // Buscar áudios diretamente do JSON estático (evita usar API route que inclui arquivos grandes)
-                // Adiciona timestamp para evitar cache do navegador/CDN
+                // Buscar áudios via API route para evitar cache
                 let audiosData = []
                 try {
-                    const timestamp = Date.now()
-                    const audiosResponse = await fetch(`/data/audio-projects.json?v=${timestamp}`, { 
+                    const audiosResponse = await fetch('/api/data/audio-projects.json', { 
                         cache: 'no-store',
-                        headers: { 'Cache-Control': 'no-cache' }
                     })
                     if (audiosResponse.ok) {
                         audiosData = await audiosResponse.json()
                     }
                 } catch (error) {
-                    console.error('Erro ao carregar áudios do JSON estático:', error)
+                    console.error('Erro ao carregar áudios:', error)
                 }
 
                 // Formatar áudios

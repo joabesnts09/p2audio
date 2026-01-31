@@ -43,20 +43,17 @@ export const ServicePage = ({
     useEffect(() => {
         async function loadAudios() {
             try {
-                // Carregar diretamente do JSON estático de serviços
-                // Adiciona timestamp para evitar cache do navegador/CDN
+                // Carregar via API route para evitar cache
                 let audiosData = []
                 try {
-                    const timestamp = Date.now()
-                    const response = await fetch(`/data/services-audio-projects.json?v=${timestamp}`, { 
+                    const response = await fetch('/api/data/services-audio-projects.json', { 
                         cache: 'no-store',
-                        headers: { 'Cache-Control': 'no-cache' }
                     })
                     if (response.ok) {
                         audiosData = await response.json()
                     }
                 } catch (error) {
-                    console.error('Erro ao carregar áudios de serviços do JSON estático:', error)
+                    console.error('Erro ao carregar áudios de serviços:', error)
                 }
 
                 // Filtrar apenas áudios do tipo deste serviço
