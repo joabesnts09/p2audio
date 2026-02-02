@@ -7,6 +7,10 @@ export const runtime = 'nodejs'
 // IDs dos vídeos do YouTube
 const YOUTUBE_VIDEOS = [
   {
+    id: 'NLae2guowwc',
+    type: 'Produção de Áudio',
+  },
+  {
     id: 'sR9mcz_Ujto',
     type: 'Produção de Áudio',
   },
@@ -52,6 +56,14 @@ const YOUTUBE_VIDEOS = [
   },
   {
     id: 'gP9I1ylfeWo',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'mxn1G61tPWo',
+    type: 'Produção de Áudio',
+  },
+  {
+    id: 'hfPZe8a-0OE',
     type: 'Produção de Áudio',
   },
 ]
@@ -114,11 +126,25 @@ export async function GET() {
       })
     )
     
-    // Filtrar vídeo "Nós Somos a Mata Atlântica"
-    const filteredVideos = videos.filter(video => 
-      !video.title.toLowerCase().includes('nós somos a mata atlântica') &&
-      !video.title.toLowerCase().includes('nos somos a mata atlantica')
-    )
+    // Filtrar vídeos que não devem aparecer no portfólio
+    const filteredVideos = videos.filter(video => {
+      const titleLower = video.title.toLowerCase()
+      return (
+        !titleLower.includes('nós somos a mata atlântica') &&
+        !titleLower.includes('nos somos a mata atlantica') &&
+        !titleLower.includes('pesadelo na cozinha')
+      )
+    })
+    
+    // Colocar "MOVEINFRA - versão em inglês" na segunda posição (ao lado da versão em português)
+    const moveinfraEnIndex = filteredVideos.findIndex(v => {
+      const t = v.title.toLowerCase()
+      return t.includes('moveinfra') && (t.includes('inglês') || t.includes('ingles') || t.includes('english'))
+    })
+    if (moveinfraEnIndex > 0) {
+      const [moveinfraEn] = filteredVideos.splice(moveinfraEnIndex, 1)
+      filteredVideos.splice(1, 0, moveinfraEn)
+    }
     
     console.log(`[API] Carregados ${filteredVideos.length} vídeos do YouTube com títulos reais`)
     return NextResponse.json(filteredVideos)
