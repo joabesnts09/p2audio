@@ -104,16 +104,16 @@ export default function RootLayout({
             style: {
               background: '#1a1a1a',
               color: '#fff',
-              border: '1px solid #C8C034',
+              border: '1px solid #FDD600',
               borderRadius: '0.5rem',
             },
             success: {
               iconTheme: {
-                primary: '#C8C034',
+                primary: '#FDD600',
                 secondary: '#1a1a1a',
               },
               style: {
-                border: '1px solid #C8C034',
+                border: '1px solid #FDD600',
               },
             },
             error: {

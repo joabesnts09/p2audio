@@ -335,7 +335,7 @@ export const AudioCard = ({
                     width: 14px;
                     height: 14px;
                     border-radius: 50%;
-                    background: #C8C034;
+                    background: #FDD600;
                     cursor: pointer;
                     border: 2px solid #fff;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -345,7 +345,7 @@ export const AudioCard = ({
                     width: 14px;
                     height: 14px;
                     border-radius: 50%;
-                    background: #C8C034;
+                    background: #FDD600;
                     cursor: pointer;
                     border: 2px solid #fff;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

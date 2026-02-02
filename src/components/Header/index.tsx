@@ -445,12 +445,12 @@ export const Header = () => {
                     left: 0;
                     width: 100%;
                     height: 3px;
-                    background-color: #C8C034;
+                    background-color: #FDD600;
                     border-radius: 2px;
                 }
                 /* Dropdown de serviços */
                 #navigation li.relative:hover > a {
-                    color: #C8C034;
+                    color: #FDD600;
                 }
                 /* Estilo para link ativo no mobile */
                 #mobileNav a.active::after {
@@ -461,12 +461,12 @@ export const Header = () => {
                     transform: translateX(-50%);
                     width: 80%;
                     height: 3px;
-                    background-color: #C8C034;
+                    background-color: #FDD600;
                     border-radius: 2px;
                 }
                 #navigation a.active,
                 #mobileNav a.active {
-                    color: #C8C034;
+                    color: #FDD600;
                 }
             `}</style>
         </motion.header>
