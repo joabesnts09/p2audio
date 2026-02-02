@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "echo 'Skipping audio generation - using existing JSON files'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
