@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-audio-list.js && node scripts/generate-services-audio-list.js",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-audios": "node scripts/generate-audio-list.js && node scripts/generate-services-audio-list.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
