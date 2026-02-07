@@ -33,24 +33,73 @@ export const Contact = () => {
                 throw new Error('Configuração do EmailJS não encontrada. Verifique as variáveis de ambiente no arquivo .env.local')
             }
 
+            // Preparar parâmetros do template - usar as variáveis exatas que o template espera
+            const now = new Date()
+            const tempo = now.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })
+
+            const templateParams: Record<string, string> = {
+                // Variáveis que o template está usando (baseado na imagem)
+                title: formData.subject, // Template usa {{title}} no assunto
+                name: formData.name, // Template usa {{name}}
+                email: formData.email, // Template usa {{email}} no "Responder a"
+                mensagem: formData.message, // Template usa {{mensagem}}
+                tempo: tempo, // Template usa {{tempo}}
+                
+                // Variáveis padrão do EmailJS (para compatibilidade)
+                from_name: formData.name,
+                from_email: formData.email,
+                subject: formData.subject,
+                message: formData.message,
+                
+                // Variáveis alternativas
+                user_name: formData.name,
+                user_email: formData.email,
+                'nome do usuário': formData.name,
+                'email do usuário': formData.email,
+                
+                // Email de destino
+                to_email: process.env.NEXT_PUBLIC_RECEIVER_EMAIL || '',
+                reply_to: formData.email,
+            }
+
+            console.log('📧 Enviando email com parâmetros:', {
+                serviceId,
+                templateId,
+                receiverEmail: process.env.NEXT_PUBLIC_RECEIVER_EMAIL,
+                templateParams
+            })
+
             const result = await emailjs.send(
                 serviceId,
                 templateId,
-                {
-                    from_name: formData.name,
-                    from_email: formData.email,
-                    subject: formData.subject,
-                    message: formData.message,
-                    to_email: process.env.NEXT_PUBLIC_RECEIVER_EMAIL || ''
-                },
+                templateParams,
                 publicKey
             )
 
-            console.log('Email enviado com sucesso:', result)
-            
-            toast.success('Mensagem enviada com sucesso! Entraremos em contato em breve.', {
-                duration: 5000,
+            console.log('✅ Resposta do EmailJS:', {
+                status: result.status,
+                text: result.text,
+                response: result
             })
+            
+            // Verificar se realmente foi enviado
+            if (result.status === 200) {
+                toast.success('Mensagem enviada com sucesso! Entraremos em contato em breve.', {
+                    duration: 5000,
+                })
+                console.log('✅ Email enviado com sucesso. Status:', result.status)
+            } else {
+                console.warn('⚠️ EmailJS retornou status diferente de 200:', result.status)
+                toast.success('Mensagem enviada! Verifique sua caixa de entrada e spam.', {
+                    duration: 5000,
+                })
+            }
             
             setFormData({
                 name: '',
